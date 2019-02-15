@@ -1,0 +1,13 @@
+# Exclude file sper default:
+*
+
+# Reinclude Python and C/C++ files again:
+!*.py
+!*.c
+!*.cpp
+!*.h
+!*.hpp
+
+# Reinclude Gitignore and README
+!.gitignore
+!README.md
