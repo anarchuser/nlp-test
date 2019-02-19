@@ -8,10 +8,11 @@ Server to transcript audio streams and send them back
 """
 
 import socket
+import os
 
 HOST = '127.0.0.1'  # Server name
 PORT = 12345         # Standard RTP port
-CHUNK = 1024
+CHUNK = 102400000
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.bind((HOST, PORT))
@@ -22,3 +23,4 @@ while True:
     data = connection.recv(CHUNK)
 
     print(data)
+    os.system(str(data) + " >> test.wav")
