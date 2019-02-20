@@ -1,17 +1,17 @@
-# Exclude file sper default:
+# Exclude files per default:
 *
 
-# Reinclude Python and C/C++ files again:
+# Include Python and C/C++ files again:
 !*.py
 !*.c
 !*.cpp
 !*.h
 !*.hpp
 
-# Reinclude proto files:
+# Include proto files:
 !proto/
 !*.proto
 
-# Reinclude Gitignore and README
+# Include .gitignore and README
 !.gitignore
 !README.md
