@@ -7,29 +7,35 @@ NOTEPADAI
 Server to transcript audio streams and send them back
 """
 
-import socket
-import os
-import time
-import grpc
-from concurrent import futures
-
 import audioStream_pb2_grpc
 
-HOST = '127.0.0.1'  # Server name
-PORT = 12345         # Standard RTP port
-CHUNK = 128
-FOREVER = 10000000
+from concurrent import futures
+import grpc
+import time
 
-def serve(UPTIME):
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+
+""" Constants: """
+HOST = '127.0.0.1'   # Server name
+PORT = 12345         # Server port
+CHUNK = 128          # Amount of bytes per packet
+FOREVER = 1000000    # Large number to keep the server running.
+WORKERS = 8          # Max. amount of simultaneous threads
+""""""
+
+
+""" Server: """
+# Starts an gRPC server
+def serve(host, port, chunk, uptime = FOREVER, workers = WORKERS):
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))
     audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer, server)
-    server.add_insecure_port('[::]:' + str(PORT))
+    server.add_insecure_port(host + ':' + str(port))
     server.start()
     try:
-        time.sleep(UPTIME)
+        time.sleep(uptime)
     except KeyboardInterrupt:
         server.stop()
 
+
 print("Start serving.")
-serve(FOREVER)
+serve(HOST, PORT, CHUNK, FOREVER, WORKERS)
 print("Stop serving.")
