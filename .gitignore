@@ -8,6 +8,10 @@
 !*.h
 !*.hpp
 
+# Reinclude proto files:
+!proto/
+!*.proto
+
 # Reinclude Gitignore and README
 !.gitignore
 !README.md
