@@ -4,7 +4,7 @@
 NOTEPADAI
 (Main script)
 
-Server to transcript audio streams and send them back
+Server to transcript audioIntro to Audio Programming, Part 2: streams and send them back
 """
 
 import audioStream_pb2_grpc
