@@ -21,8 +21,15 @@ class Processor (threading.Thread):
         self.isRunning = False
 
     def run(self):
+        print("Received connection from phone!!!")
+
         self.isRunning = True
         while self.isRunning and not self.samples.empty:
+
+            # Test to see whether data arrives
+            if not self.samples.empty:
+                print(self.samples.get())
+
             # TODO: Add the actual audio processing here
             # (Take bytes from samples queue, process them, put words into other response queue)
             pass

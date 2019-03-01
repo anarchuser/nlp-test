@@ -14,7 +14,7 @@ import time
 
 """ Constants: """
 HOST = '127.0.0.1'   # Server name
-PORT = 12345         # Server port
+PORT = 52659         # Server port (std RTP port)
 FOREVER = 1000000    # Large number to keep the server running.
 WORKERS = 8          # Max. amount of simultaneous threads
 """"""
@@ -38,25 +38,19 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
                 yield processor.response.get()          # Get data from response queue
         processor.stop()                                # Stop the thread
 
-    def serve(self, **kwargs):
-        """ Apply new arguments if available"""
-        host = kwargs['host'] if kwargs['host'] else self.host
-        port = kwargs['port'] if kwargs['port'] else self.port
-        uptime = kwargs['time'] if kwargs['time'] else self.uptime
-        workers = kwargs['workers'] if kwargs['workers'] else self.workers
-
+    def serve(self):
         print("Prepare servant")
-        server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
         audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer, server)
-        server.add_insecure_port(host + ':' + str(port))
+        server.add_insecure_port(self.host + ':' + str(self.port))
 
         print("Start serving")
         server.start()
         try:
-            time.sleep(uptime)
+            time.sleep(self.uptime)
         except KeyboardInterrupt:
-            print("Stop serving")
-            server.stop()
+            server.stop(None)
+        print("Stop serving")
 
 
 if __name__ == "__main__":
@@ -64,7 +58,7 @@ if __name__ == "__main__":
     print("Conceive servant")
     servant = AudioProcessorServicer(HOST, PORT, FOREVER, WORKERS)
 
-    print("Awake servant")
+    print("Enliven servant")
     servant.serve()
 
     print("Kill servant")
