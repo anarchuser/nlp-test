@@ -2,7 +2,7 @@
 NOTEPADAI
 (Main script)
 
-Server to transcript audioIntro to Audio Programming, Part 2: streams and send them back
+Server to transcript audio
 """
 
 import audioStream_pb2_grpc
@@ -31,7 +31,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         processor = Processor()                         # Create a new object to process the audio stream
         processor.start()                               # Start the thread the processor is working on
         processor.run()                                 # Start the actual processor
-        for sample in request_iterator:
+        for samples in request_iterator:
             for byte in samples.chunk:
                 processor.samples.put(byte)             # Put data in sample queue
             while not processor.response.Empty:
@@ -45,6 +45,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         uptime = kwargs['time'] if kwargs['time'] else self.uptime
         workers = kwargs['workers'] if kwargs['workers'] else self.workers
 
+        print("Prepare servant")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))
         audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer, server)
         server.add_insecure_port(host + ':' + str(port))
@@ -63,7 +64,7 @@ if __name__ == "__main__":
     print("Conceive servant")
     servant = AudioProcessorServicer(HOST, PORT, FOREVER, WORKERS)
 
-    print("Vitalise servant")
+    print("Awake servant")
     servant.serve()
 
     print("Kill servant")

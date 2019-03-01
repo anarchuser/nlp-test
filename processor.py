@@ -24,7 +24,7 @@ class Processor (threading.Thread):
         self.isRunning = True
         while self.isRunning and not self.samples.empty:
             # TODO: Add the actual audio processing here
-            # (Take bytes from samples queue, process them, put words into other response queue
+            # (Take bytes from samples queue, process them, put words into other response queue)
             pass
 
     def stop(self):
