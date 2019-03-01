@@ -17,7 +17,7 @@ class AudioProcessorStub(object):
     self.TranscriptAudio = channel.stream_stream(
         '/AudioProcessor/TranscriptAudio',
         request_serializer=audioStream__pb2.Sample.SerializeToString,
-        response_deserializer=audioStream__pb2.Sentence.FromString,
+        response_deserializer=audioStream__pb2.Response.FromString,
         )
 
 
@@ -38,7 +38,7 @@ def add_AudioProcessorServicer_to_server(servicer, server):
       'TranscriptAudio': grpc.stream_stream_rpc_method_handler(
           servicer.TranscriptAudio,
           request_deserializer=audioStream__pb2.Sample.FromString,
-          response_serializer=audioStream__pb2.Sentence.SerializeToString,
+          response_serializer=audioStream__pb2.Response.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

@@ -14,7 +14,7 @@ message Sample {
 }
 
 // Used to return text to the user
-message Sentence {
-    // One sentence (or sequence of words) recognized
-    string msg = 1;
+message Response {
+    // One Word recognized
+    string word = 1;
 }

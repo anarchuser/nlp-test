@@ -19,13 +19,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x11\x61udioStream.proto\"\x1b\n\nSample\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"\x17\n\x08Sentence\x12\x0b\n\x03msg\x18\x01 \x01(\t2?\n\x0e\x41udioProcessor\x12-\n\x0fTranscriptAudio\x12\x0b.Sample\x1a\t.Sentence(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x11\x61udioStream.proto\"\x1b\n\nSample\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"\x17\n\x08Response\x12\x0b\n\x03word\x18\x01 \x01(\t2?\n\x0e\x41udioProcessor\x12-\n\x0fTranscriptAudio\x12\x0b.Sample\x1a\t.Response(\x01\x30\x01\x62\x06proto3')
 )
 
 
-
-
-_AUDIOCHUNK = _descriptor.Descriptor(
+_SAMPLE = _descriptor.Descriptor(
   name='Sample',
   full_name='Sample',
   filename=None,
@@ -56,15 +54,15 @@ _AUDIOCHUNK = _descriptor.Descriptor(
 )
 
 
-_SENTENCE = _descriptor.Descriptor(
-  name='Sentence',
-  full_name='Sentence',
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='Response',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='msg', full_name='Sentence.msg', index=0,
+      name='word', full_name='Response.word', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -86,23 +84,23 @@ _SENTENCE = _descriptor.Descriptor(
   serialized_end=73,
 )
 
-DESCRIPTOR.message_types_by_name['Sample'] = _AUDIOCHUNK
-DESCRIPTOR.message_types_by_name['Sentence'] = _SENTENCE
+DESCRIPTOR.message_types_by_name['Sample'] = _SAMPLE
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Sample = _reflection.GeneratedProtocolMessageType('Sample', (_message.Message,), dict(
-  DESCRIPTOR = _AUDIOCHUNK,
+  DESCRIPTOR = _SAMPLE,
   __module__ = 'audioStream_pb2'
   # @@protoc_insertion_point(class_scope:Sample)
   ))
 _sym_db.RegisterMessage(Sample)
 
-Sentence = _reflection.GeneratedProtocolMessageType('Sentence', (_message.Message,), dict(
-  DESCRIPTOR = _SENTENCE,
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
+  DESCRIPTOR = _RESPONSE,
   __module__ = 'audioStream_pb2'
-  # @@protoc_insertion_point(class_scope:Sentence)
+  # @@protoc_insertion_point(class_scope:Response)
   ))
-_sym_db.RegisterMessage(Sentence)
+_sym_db.RegisterMessage(Response)
 
 
 
@@ -120,8 +118,8 @@ _AUDIOPROCESSOR = _descriptor.ServiceDescriptor(
     full_name='AudioProcessor.TranscriptAudio',
     index=0,
     containing_service=None,
-    input_type=_AUDIOCHUNK,
-    output_type=_SENTENCE,
+    input_type=_SAMPLE,
+    output_type=_RESPONSE,
     serialized_options=None,
   ),
 ])
