@@ -19,21 +19,21 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x11\x61udioStream.proto\"\x17\n\x06Sample\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"\x18\n\x08Response\x12\x0c\n\x04word\x18\x01 \x01(\t2;\n\x0e\x41udioProcessor\x12)\n\x0fTranscriptAudio\x12\x07.Sample\x1a\t.Response(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x11\x61udioStream.proto\"\x18\n\x07Samples\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"\x18\n\x08Response\x12\x0c\n\x04word\x18\x01 \x01(\t2<\n\x0e\x41udioProcessor\x12*\n\x0fTranscriptAudio\x12\x08.Samples\x1a\t.Response(\x01\x30\x01\x62\x06proto3')
 )
 
 
 
 
-_SAMPLE = _descriptor.Descriptor(
-  name='Sample',
-  full_name='Sample',
+_SAMPLES = _descriptor.Descriptor(
+  name='Samples',
+  full_name='Samples',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='chunk', full_name='Sample.chunk', index=0,
+      name='chunk', full_name='Samples.chunk', index=0,
       number=1, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
@@ -52,7 +52,7 @@ _SAMPLE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=21,
-  serialized_end=44,
+  serialized_end=45,
 )
 
 
@@ -82,20 +82,20 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=46,
-  serialized_end=70,
+  serialized_start=47,
+  serialized_end=71,
 )
 
-DESCRIPTOR.message_types_by_name['Sample'] = _SAMPLE
+DESCRIPTOR.message_types_by_name['Samples'] = _SAMPLES
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Sample = _reflection.GeneratedProtocolMessageType('Sample', (_message.Message,), dict(
-  DESCRIPTOR = _SAMPLE,
+Samples = _reflection.GeneratedProtocolMessageType('Samples', (_message.Message,), dict(
+  DESCRIPTOR = _SAMPLES,
   __module__ = 'audioStream_pb2'
-  # @@protoc_insertion_point(class_scope:Sample)
+  # @@protoc_insertion_point(class_scope:Samples)
   ))
-_sym_db.RegisterMessage(Sample)
+_sym_db.RegisterMessage(Samples)
 
 Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
   DESCRIPTOR = _RESPONSE,
@@ -112,15 +112,15 @@ _AUDIOPROCESSOR = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=72,
-  serialized_end=131,
+  serialized_start=73,
+  serialized_end=133,
   methods=[
   _descriptor.MethodDescriptor(
     name='TranscriptAudio',
     full_name='AudioProcessor.TranscriptAudio',
     index=0,
     containing_service=None,
-    input_type=_SAMPLE,
+    input_type=_SAMPLES,
     output_type=_RESPONSE,
     serialized_options=None,
   ),

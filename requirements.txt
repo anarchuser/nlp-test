@@ -1,0 +1,8 @@
+# Package requirements for python:
+grpc
+concurrent
+numpy
+pyaudio
+queue
+threaded
+time

@@ -32,7 +32,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         processor.start()                               # Start the thread the processor is working on
         processor.run()                                 # Start the actual processor
         for sample in request_iterator:
-            for byte in sample.chunk:
+            for byte in samples.chunk:
                 processor.samples.put(byte)             # Put data in sample queue
             while not processor.response.Empty:
                 yield processor.response.get()          # Get data from response queue

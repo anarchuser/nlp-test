@@ -8,6 +8,12 @@
 !*.h
 !*.hpp
 
+# Include requirements.txt:
+!requirements.txt
+
+# Include proto regen file:
+!regen_proto.sh
+
 # Include proto files:
 !proto/
 !*.proto
