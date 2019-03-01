@@ -8,34 +8,37 @@ Server to transcript audioIntro to Audio Programming, Part 2: streams and send t
 """
 
 import audioStream_pb2_grpc
-import processor
+from processor import *
 
 from concurrent import futures
 import grpc
 import time
 
-
 """ Constants: """
 HOST = '127.0.0.1'   # Server name
 PORT = 12345         # Server port
-CHUNK = 320          # Amount of bytes per packet
 FOREVER = 1000000    # Large number to keep the server running.
 WORKERS = 8          # Max. amount of simultaneous threads
 """"""
 
 
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
-    def __init__(self, host, port, chunk, uptime, workers):
+    def __init__(self, host, port, uptime, workers):
         self.host = host
         self.port = port
-        self.chunk = chunk
         self.uptime = uptime
         self.workers = workers
-        self.processor = processor.processor(chunk)
 
     def TranscriptAudio(self, request_iterator, context):
-        for chunk in request_iterator:
-            yield self.processor.exchangeData(chunk)
+        processor = Processor()                         # Create a new object to process the audio stream
+        processor.start()                               # Start the thread the processor is working on
+        processor.run()                                 # Start the actual processor
+        for sample in request_iterator:
+            for byte in sample.chunk:
+                processor.samples.put(byte)             # Put data in sample queue
+            while not processor.response.Empty:
+                yield processor.response.get()          # Get data from response queue
+        processor.stop()                                # Stop the thread
 
     def serve(self, **kwargs):
         """ Apply new arguments if available"""
@@ -53,11 +56,12 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         except KeyboardInterrupt:
             server.stop()
 
+# Set up and start server
+if __name__ == "__main__":
+    print("Conceive servant")
+    servant = AudioProcessorServicer(HOST, PORT, FOREVER, WORKERS)
 
-print("Conceive servant")
-servant = AudioProcessorServicer(HOST, PORT, CHUNK, FOREVER, WORKERS)
+    print("Start serving.")
+    servant.serve()
 
-print("Start serving.")
-servant.serve()
-
-print("Stop serving.")
+    print("Stop serving.")
