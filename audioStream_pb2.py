@@ -19,8 +19,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x11\x61udioStream.proto\"\x1b\n\nSample\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"\x17\n\x08Response\x12\x0b\n\x03word\x18\x01 \x01(\t2?\n\x0e\x41udioProcessor\x12-\n\x0fTranscriptAudio\x12\x0b.Sample\x1a\t.Response(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x11\x61udioStream.proto\"\x17\n\x06Sample\x12\r\n\x05\x63hunk\x18\x01 \x01(\x0c\"\x18\n\x08Response\x12\x0c\n\x04word\x18\x01 \x01(\t2;\n\x0e\x41udioProcessor\x12)\n\x0fTranscriptAudio\x12\x07.Sample\x1a\t.Response(\x01\x30\x01\x62\x06proto3')
 )
+
+
 
 
 _SAMPLE = _descriptor.Descriptor(
@@ -50,7 +52,7 @@ _SAMPLE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=21,
-  serialized_end=48,
+  serialized_end=44,
 )
 
 
@@ -80,8 +82,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=50,
-  serialized_end=73,
+  serialized_start=46,
+  serialized_end=70,
 )
 
 DESCRIPTOR.message_types_by_name['Sample'] = _SAMPLE
@@ -110,8 +112,8 @@ _AUDIOPROCESSOR = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=75,
-  serialized_end=138,
+  serialized_start=72,
+  serialized_end=131,
   methods=[
   _descriptor.MethodDescriptor(
     name='TranscriptAudio',

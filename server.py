@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 NOTEPADAI
 (Main script)
@@ -50,18 +48,22 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))
         audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer, server)
         server.add_insecure_port(host + ':' + str(port))
+
+        print("Start serving")
         server.start()
         try:
             time.sleep(uptime)
         except KeyboardInterrupt:
+            print("Stop serving")
             server.stop()
 
-# Set up and start server
+
 if __name__ == "__main__":
+    # Set up and start the server
     print("Conceive servant")
     servant = AudioProcessorServicer(HOST, PORT, FOREVER, WORKERS)
 
-    print("Start serving.")
+    print("Vitalise servant")
     servant.serve()
 
-    print("Stop serving.")
+    print("Kill servant")
