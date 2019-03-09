@@ -1,4 +1,0 @@
-# Package requirements for python:
-numpy
-pyaudio
-threading
