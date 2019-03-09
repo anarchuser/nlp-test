@@ -14,7 +14,7 @@ import time
 
 """ Constants: """
 HOST = '127.0.0.1'   # Server name
-PORT = 52659         # Server port (std RTP port)
+PORT = 12345         # Server port
 FOREVER = 1000000    # Large number to keep the server running.
 WORKERS = 8          # Max. amount of simultaneous threads
 """"""
@@ -22,6 +22,7 @@ WORKERS = 8          # Max. amount of simultaneous threads
 
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
     def __init__(self, host, port, uptime, workers):
+        print("Mark servant (" + str(port) + ")")
         self.host = host
         self.port = port
         self.uptime = uptime
@@ -34,8 +35,8 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         for samples in request_iterator:
             for byte in samples.chunk:
                 processor.samples.put(byte)             # Put data in sample queue
-            while not processor.response.Empty:
-                yield processor.response.get()          # Get data from response queue
+            while not processor.responses.Empty:
+                yield processor.responses.get()          # Get data from response queue
         processor.stop()                                # Stop the thread
 
     def serve(self):

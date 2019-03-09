@@ -1,4 +1,4 @@
 # Package requirements for python:
 numpy
 pyaudio
-threaded
+threading
