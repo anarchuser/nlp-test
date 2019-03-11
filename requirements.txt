@@ -3,3 +3,4 @@ numpy
 pyaudio
 threading
 grpcio
+grpcio_tools

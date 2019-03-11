@@ -9,8 +9,8 @@ Provides tools to transcript an audio stream
 
 import queue
 import threading
-import numpy
-import pyaudio
+#import numpy
+#import pyaudio
 
 
 class Processor (threading.Thread):
