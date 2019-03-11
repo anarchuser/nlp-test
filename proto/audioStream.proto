@@ -5,7 +5,7 @@ syntax = "proto3";
 
 // Interface to server
 service AudioProcessor {
-    rpc TranscriptAudio (stream Samples) returns (stream Response);
+    rpc transcriptAudio (stream Samples) returns (stream Response);
 }
 
 // Used to send audio chunks to the server

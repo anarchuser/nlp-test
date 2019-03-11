@@ -13,7 +13,7 @@ import grpc
 import time
 
 """ Constants: """
-HOST = '127.0.0.1'   # Server name
+HOST = '192.168.44.103'  # Server name
 PORT = 12345         # Server port
 FOREVER = 1000000    # Large number to keep the server running.
 WORKERS = 8          # Max. amount of simultaneous threads
@@ -28,7 +28,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         self.uptime = uptime
         self.workers = workers
 
-    def TranscriptAudio(self, request_iterator, context):
+    def transcriptAudio(self, request_iterator, context):
         processor = Processor()                         # Create a new object to process the audio stream
         processor.start()                               # Start the thread the processor is working on
         processor.run()                                 # Start the actual processor
@@ -42,7 +42,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
     def serve(self):
         print("Prepare servant")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
-        audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer, server)
+        audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer(), server)
         server.add_insecure_port(self.host + ':' + str(self.port))
 
         print("Start serving")

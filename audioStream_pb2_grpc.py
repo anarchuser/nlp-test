@@ -14,8 +14,8 @@ class AudioProcessorStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.TranscriptAudio = channel.stream_stream(
-        '/AudioProcessor/TranscriptAudio',
+    self.transcriptAudio = channel.stream_stream(
+        '/AudioProcessor/transcriptAudio',
         request_serializer=audioStream__pb2.Samples.SerializeToString,
         response_deserializer=audioStream__pb2.Response.FromString,
         )
@@ -25,7 +25,7 @@ class AudioProcessorServicer(object):
   """Interface to server
   """
 
-  def TranscriptAudio(self, request_iterator, context):
+  def transcriptAudio(self, request_iterator, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -35,8 +35,8 @@ class AudioProcessorServicer(object):
 
 def add_AudioProcessorServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'TranscriptAudio': grpc.stream_stream_rpc_method_handler(
-          servicer.TranscriptAudio,
+      'transcriptAudio': grpc.stream_stream_rpc_method_handler(
+          servicer.transcriptAudio,
           request_deserializer=audioStream__pb2.Samples.FromString,
           response_serializer=audioStream__pb2.Response.SerializeToString,
       ),
