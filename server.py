@@ -6,6 +6,7 @@ Server to transcript audio
 """
 
 import audioStream_pb2_grpc
+import audioStream_pb2
 from processor import *
 
 from concurrent import futures
@@ -29,20 +30,25 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         self.workers = workers
 
     def transcriptAudio(self, request_iterator, context):
-        processor = Processor()                         # Create a new object to process the audio stream
-        processor.start()                               # Start the thread the processor is working on
-        processor.run()                                 # Start the actual processor
-        for samples in request_iterator:
-            for byte in samples.chunk:
-                processor.samples.put(byte)             # Put data in sample queue
-            while not processor.responses.Empty:
-                yield processor.responses.get()          # Get data from response queue
-        processor.stop()                                # Stop the thread
+        print("Connection received")
+        processor = Processor()                                     # Create a new object to process the audio stream
+        processor.start()                                           # Start processing
+        for Samples in request_iterator:
+            for byte in Samples.chunk:
+                processor.samples.put(byte)                         # Put data in sample queue
+            while True:
+                try:
+                    response = audioStream_pb2.Response()
+                    response.word = processor.responses.get()
+                    yield response                                  # Get data from response queue
+                except queue.Empty:
+                    processor.stop()                                # Stop the processor
+                    print("Connection Lost")
 
     def serve(self):
         print("Prepare servant")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
-        audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(audioStream_pb2_grpc.AudioProcessorServicer(), server)
+        audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(self, server)
         server.add_insecure_port(self.host + ':' + str(self.port))
 
         print("Start serving")
