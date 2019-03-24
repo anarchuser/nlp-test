@@ -6,7 +6,7 @@ NOTEPADAI
 
 Provides tools to transcript an audio stream
 
-=== Google Cloud Voice Transcription ===
+=== New algorithm for speech to text ===
 """
 
 import queue
