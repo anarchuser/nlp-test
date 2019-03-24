@@ -34,8 +34,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         processor = Processor()                                     # Create a new object to process the audio stream
         processor.start()                                           # Start processing
         for Samples in request_iterator:
-            for byte in Samples.chunk:
-                processor.samples.put(byte)                         # Put data in sample queue
+            processor.samples.put(Samples.chunk)                    # Put data in sample stream
             while True:
                 try:
                     response = audioStream_pb2.Response()

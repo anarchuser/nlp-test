@@ -5,13 +5,16 @@ NOTEPADAI
 (Processor)
 
 Provides tools to transcript an audio stream
+
+=== Google Cloud Voice Transcription ===
 """
 
 import queue
 import threading
-#import numpy
-#import pyaudio
+import numpy as np
+import pyaudio
 
+import time
 
 class Processor (threading.Thread):
     def __init__(self):
@@ -21,18 +24,24 @@ class Processor (threading.Thread):
         self.isRunning = False
 
     def run(self):
+        print("Thread started.")
+        self.process()
+
+    def stop(self):
+        self.isRunning = False
+
+    def process(self):
         msg = "Transmission"
 
         self.isRunning = True
         print("start processing...")
-        while self.isRunning or not self.samples.empty:
-            # Test to see whether data arrives
-            if not self.samples.empty():
-                print(self.samples.get())
 
+        """ Test implementation: """
+
+        while self.isRunning or not self.samples.empty:
             # TODO: Add the actual audio processing here
             # (Take bytes from samples queue, process them, put words into responses queue)
             self.responses.put(msg)
+            time.sleep(1)
 
-    def stop(self):
-        self.isRunning = False
+        """ End of Test """
