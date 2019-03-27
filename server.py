@@ -31,11 +31,11 @@ def is_valid(address):
 
 
 def get_valid_address(default):
-    address_v4 = input("Use different address?: ")
-    if address_v4 == '':
+    address = input("Use different address?: ")
+    if address == '':
         return default
-    if is_valid(address_v4):
-        return address_v4
+    if is_valid(address):
+        return address
     else:
         return get_valid_address(default)
 
@@ -78,10 +78,10 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 if __name__ == "__main__":
     # Set up and start the server
     print("Route servant - Default IP: " + HOST)
-    address = get_valid_address(default=HOST)
+    ip = get_valid_address(default=HOST)
 
     print("Conceive servant")
-    servant = AudioProcessorServicer(host=address, port=PORT, uptime=FOREVER, workers=WORKERS)
+    servant = AudioProcessorServicer(host=ip, port=PORT, uptime=FOREVER, workers=WORKERS)
 
     print("Enliven servant")
     servant.serve()
