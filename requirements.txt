@@ -1,6 +1,5 @@
 # Package requirements for python:
 numpy
 pyaudio
-threading
 grpcio
 grpcio_tools
