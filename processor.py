@@ -21,7 +21,7 @@ class Processor:
         print("Start processing")
         self.isRunning = True
 
-        while True > 0:
+        while True:
             yield self.features.__next__()
 
         print("Stop processing")
