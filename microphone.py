@@ -10,15 +10,27 @@ Sends microphone input to the processor, for testing purposes
 import pyaudio
 import time
 
-CHUNK = 300
+import processor
+
+CHUNK = 256
+
+
+def toArray(stream):
+    while True:
+        yield stream.read(CHUNK)
+
+
+print("Setting up audio stream")
 
 p = pyaudio.PyAudio()
-stream = p.open(format=pyaudio.paInt8, channels=1, rate=16000, input=True, frames_per_buffer=CHUNK)
+mic = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=CHUNK)
+processor = processor.Processor()
 
-try:
-    while True:
-        data = stream.read(CHUNK)
-        print(data)
-        time.sleep(10)
-except KeyboardInterrupt:
-    print("Stop recording")
+print("Set up")
+
+process = processor.process(toArray(mic))
+
+data = " "
+while data:
+    data = process.__next__()
+    print(data)
