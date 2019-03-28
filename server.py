@@ -56,8 +56,10 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
-        processor = Processor()
-        yield string_to_response(processor.process(request_iterator))
+        processor = Processor(request_iterator)
+        while processor.isRunning:
+            yield string_to_response(processor.process().__next__())
+
         print("Connection ended")
 
     def serve(self):

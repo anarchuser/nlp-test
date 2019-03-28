@@ -24,13 +24,11 @@ print("Setting up audio stream")
 
 p = pyaudio.PyAudio()
 mic = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=CHUNK)
-processor = processor.Processor()
+processor = processor.Processor(toArray(mic))
 
 print("Set up")
-
-process = processor.process(toArray(mic))
-
-data = " "
-while data:
-    data = process.__next__()
-    print(data)
+data_stream = processor.process()
+data = [0]
+while len(data) > 0:
+    data = data_stream.__next__()
+    print(data, '\n')

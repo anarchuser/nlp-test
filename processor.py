@@ -9,22 +9,26 @@ Provides tools to transcript an audio stream
 
 import librosa
 import numpy as np
-import time
 
 
-class Processor():
-    def __init__(self):
+class Processor:
+    def __init__(self, stream):
         self.isRunning = False
+        self.speech = stream
+        self.features = self.extract_features()
 
-    def process(self, stream):
+    def process(self):
         print("Start processing")
         self.isRunning = True
-        dummy_text = "Transmission!"
 
-        sample = [0]
-        while len(sample) > 0:
-            sample = librosa.util.buf_to_float(np.array(stream.__next__()))
-            features = librosa.feature.mfcc(sample)
-            print(features)
-            yield dummy_text
+        while True > 0:
+            yield self.features.__next__()
 
+        print("Stop processing")
+        self.isRunning = False
+
+    def extract_features(self):
+        while True:
+            sample_byte = np.array(self.speech.__next__())
+            sample_float = librosa.util.buf_to_float(sample_byte)
+            yield librosa.feature.mfcc(sample_float)
