@@ -5,43 +5,30 @@ NOTEPADAI
 (Processor)
 
 Provides tools to transcript an audio stream
-
-=== New algorithm for speech to text ===
 """
 
-import queue
-import threading
+import librosa
 import numpy as np
-import pyaudio
 
-import time
 
-class Processor (threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.samples = queue.Queue()
-        self.responses = queue.Queue()
+class Processor:
+    def __init__(self, stream):
         self.isRunning = False
-
-    def run(self):
-        print("Thread started.")
-        self.process()
-
-    def stop(self):
-        self.isRunning = False
+        self.speech = stream
+        self.features = self.extract_features()
 
     def process(self):
-        msg = "Transmission"
-
+        print("Start processing")
         self.isRunning = True
-        print("start processing...")
 
-        """ Test implementation: """
+        while True:
+            yield self.features.__next__()
 
-        while self.isRunning or not self.samples.empty:
-            # TODO: Add the actual audio processing here
-            # (Take bytes from samples queue, process them, put words into responses queue)
-            self.responses.put(msg)
-            time.sleep(1)
+        print("Stop processing")
+        self.isRunning = False
 
-        """ End of Test """
+    def extract_features(self):
+        while True:
+            sample_byte = np.array(self.speech.__next__())
+            sample_float = librosa.util.buf_to_float(sample_byte)
+            yield librosa.feature.mfcc(sample_float)
