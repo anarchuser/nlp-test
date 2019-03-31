@@ -8,27 +8,27 @@ Sends microphone input to the processor, for testing purposes
 """
 
 import pyaudio
-import time
+import audioStream_pb2
 
 import processor
 
-CHUNK = 256
+CHUNK = 512
 
 
 def toArray(stream):
+    samples = audioStream_pb2.Samples()
     while True:
-        yield stream.read(CHUNK)
+        samples.chunk = stream.read(CHUNK)
+        yield samples
 
 
 print("Setting up audio stream")
 
 p = pyaudio.PyAudio()
 mic = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=CHUNK)
-processor = processor.Processor(toArray(mic))
+processor = processor.Processor()
 
-print("Set up")
-data_stream = processor.process()
-data = [0]
-while len(data) > 0:
-    data = data_stream.__next__()
-    print(data, '\n')
+print("Processing audio stream")
+data_stream = processor.process(toArray(mic))
+for data in data_stream:
+    print(data)
