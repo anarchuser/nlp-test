@@ -31,4 +31,4 @@ processor = processor.Processor()
 print("Processing audio stream")
 data_stream = processor.process(toArray(mic))
 for data in data_stream:
-    print(data)
+    input(data)
