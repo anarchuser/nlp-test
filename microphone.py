@@ -12,7 +12,7 @@ import audioStream_pb2
 
 import processor
 
-CHUNK = 512
+CHUNK = 10
 
 
 def toArray(stream):
