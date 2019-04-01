@@ -7,6 +7,8 @@ NOTEPADAI
 Provides tools to transcript an audio stream
 """
 
+from brain import *
+
 import librosa
 import numpy as np
 import queue
@@ -15,6 +17,7 @@ import queue
 class Processor:
     def __init__(self):
         self.isRunning = False
+        self.brain = Brain(structure=(20, 25, 30))
         self.phonemes = queue.Queue()
 
     # Apply future neural network
@@ -35,11 +38,11 @@ class Processor:
 
     # Train future neural network
     def train(self):
-        pass
+        self.brain.train()
 
     # Test future neural network
     def test(self):
-        pass
+        self.brain.test()
 
     def extract_features(self, window):
         samples_b = np.array(window)
@@ -47,7 +50,7 @@ class Processor:
         return librosa.feature.mfcc(samples_f)
 
     def recognize_phoneme(self, mfcc):
-        return mfcc
+        return self.brain.process(mfcc)
 
     def understand_word(self):
         return "Transmission!"
