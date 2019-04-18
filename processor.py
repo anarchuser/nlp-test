@@ -10,14 +10,17 @@ Provides tools to transcript an audio stream
 from brain import *
 
 import librosa
+import tensorflow as tf
 import numpy as np
 import queue
+
+NUM_FEATURES = 20           # MFCC returns 20 features
 
 
 class Processor:
     def __init__(self):
         self.isRunning = False
-        self.brain = Brain(structure=(20, 25, 30))
+        self.brain = Brain(layers=(NUM_FEATURES, 25, 30), functions=(tf.nn.sigmoid, tf.nn.relu, tf.nn.softmax))
         self.phonemes = queue.Queue()
 
     # Apply future neural network
@@ -35,14 +38,6 @@ class Processor:
 
         print("Stop processing")
         self.isRunning = False
-
-    # Train future neural network
-    def train(self):
-        self.brain.train()
-
-    # Test future neural network
-    def test(self):
-        self.brain.test()
 
     def extract_features(self, window):
         samples_b = np.array(window)
