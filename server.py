@@ -7,7 +7,6 @@ Server to transcript audio
 
 import audioStream_pb2_grpc
 import audioStream_pb2
-from processor import *
 
 from concurrent import futures
 import grpc
@@ -31,18 +30,9 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
-        processor = Processor()                                     # Create a new object to process the audio stream
-        processor.start()                                           # Start processing
         for Samples in request_iterator:
-            processor.samples.put(Samples.chunk)                    # Put data in sample stream
-            while True:
-                try:
-                    response = audioStream_pb2.Response()
-                    response.word = processor.responses.get()
-                    yield response                                  # Get data from response queue
-                except queue.Empty:
-                    processor.stop()                                # Stop the processor
-                    print("Connection Lost")
+            pass
+        print("Connection Lost")
 
     def serve(self):
         print("Prepare servant")
