@@ -19,12 +19,10 @@ class Processor():
     def process(self, stream):
         print("Start processing")
         self.isRunning = True
+
         dummy_text = "Transmission!"
 
         sample = [0]
         while len(sample) > 0:
-            sample = librosa.util.buf_to_float(np.array(stream.__next__()))
-            features = librosa.feature.mfcc(sample)
-            print(features)
+            sample = stream.__next__()
             yield dummy_text
-
