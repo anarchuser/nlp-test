@@ -10,14 +10,39 @@ import audioStream_pb2
 
 from concurrent import futures
 import grpc
+import socket
 import time
 
 """ Constants: """
-HOST = '192.168.44.103'  # Server name
-PORT = 12345         # Server port
-FOREVER = 1000000    # Large number to keep the server running.
-WORKERS = 8          # Max. amount of simultaneous threads
+HOST = '192.168.44.103'     # Server name
+PORT = 12345                # Server port
+FOREVER = 1000000           # Large number to keep the server running.
+WORKERS = 8                 # Max. amount of simultaneous threads
 """"""
+
+
+def is_valid(address):
+    try:
+        socket.inet_aton(address)
+    except socket.error:
+        return False
+    return True
+
+
+def get_valid_address(default):
+    address = input("Use different address?: ")
+    if address == '':
+        return default
+    if is_valid(address):
+        return address
+    else:
+        return get_valid_address(default)
+
+
+def string_to_response(word):
+    response = audioStream_pb2.Response()
+    response.word = word
+    return response
 
 
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
@@ -51,8 +76,11 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
 if __name__ == "__main__":
     # Set up and start the server
+    print("Route servant - Default IP: " + HOST)
+    ip = get_valid_address(default=HOST)
+
     print("Conceive servant")
-    servant = AudioProcessorServicer(HOST, PORT, FOREVER, WORKERS)
+    servant = AudioProcessorServicer(host=ip, port=PORT, uptime=FOREVER, workers=WORKERS)
 
     print("Enliven servant")
     servant.serve()
