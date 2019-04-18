@@ -30,7 +30,5 @@ print("Set up")
 
 process = processor.process(toArray(mic))
 
-data = " "
-while data:
-    data = process.__next__()
+for data in process:
     print(data)
