@@ -19,7 +19,6 @@ def toArray(stream):
     while True:
         yield stream.read(CHUNK)
 
-
 print("Setting up audio stream")
 
 p = pyaudio.PyAudio()
