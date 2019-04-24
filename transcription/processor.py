@@ -38,8 +38,7 @@ class Processor:
 
     def process(self, stream):
         print("Start processing")
-        self.isRunning = True
-        
+
         language_code = self.lang
 
         client = speech.SpeechClient()
