@@ -28,13 +28,16 @@ class Server:
         ip = self.get_valid_address(default=host)
 
         print("Conceive servant")
+        print(ip)
         self.servant = AudioProcessorServicer(host=ip, port=port, uptime=uptime, workers=workers)
 
     def start(self):
         print("Enliven servant")
         self.servant.serve()
 
+    def stop(self):
         print("Kill servant")
+        self.servant.murder()
 
     def is_valid(self, address):
         try:
@@ -67,6 +70,8 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         self.uptime = uptime
         self.workers = workers
 
+        self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
+
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
         for word in Processor().process(request_iterator):
@@ -75,14 +80,12 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
     def serve(self):
         print("Prepare servant")
-        server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
-        audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(self, server)
-        server.add_insecure_port(self.host + ':' + str(self.port))
+        audioStream_pb2_grpc.add_AudioProcessorServicer_to_server(self, self.server)
+        self.server.add_insecure_port(self.host + ':' + str(self.port))
 
         print("Start serving")
-        server.start()
-        try:
-            time.sleep(self.uptime)
-        except KeyboardInterrupt:
-            server.stop(None)
+        self.server.start()
+
+    def murder(self):
+        self.server.stop()
         print("Stop serving")

@@ -1,4 +1,4 @@
-#!/usr/env/python3
+#!/usr/bin/env python3
 
 """
 NOTEPADAI
@@ -10,9 +10,17 @@ from transcription import microphone, server
 
 import sys
 
+OPTIONS = {
+    "server": server.Server,
+    "microphone": microphone.Microphone
+}
 
-def options():
-    pass
+
+def show_options():
+    print("Syntax: " + sys.argv[0] + " [options]")
+    print("Options:")
+    for option in list(OPTIONS):
+        print("    " + option)
 
 
 if __name__ != "__main__":
@@ -21,14 +29,14 @@ if __name__ != "__main__":
 else:
     if len(sys.argv) != 2:
         print("Wrong number of cli args.")
-        options()
+        show_options()
         sys.exit(2)
     else:
-        if sys.argv[1] == "server":
-            server.Server().start()
-        elif sys.argv[1] == "microphone":
-            microphone.Microphone().start()
-        else:
+        try:
+            OPTIONS[sys.argv[1]]().start()
+        except KeyError:
             print("Unknown argument.")
-            options()
+            show_options()
             sys.exit(3)
+        except KeyboardInterrupt:
+            sys.exit(4)
