@@ -6,8 +6,7 @@ NOTEPADAI
 Main Script for testing the transcription. Run with respective cli args
 """
 
-from transcription import microphone, prepare, processor, server
-from generated import audioStream_pb2, audioStream_pb2_grpc
+from transcription import microphone, server
 
 import sys
 
