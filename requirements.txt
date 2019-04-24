@@ -4,3 +4,6 @@ pyaudio
 grpcio
 grpcio_tools
 pyphen
+librosa
+tensorflow
+pandas
