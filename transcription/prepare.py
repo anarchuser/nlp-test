@@ -2,7 +2,7 @@
 
 """
 NOTEPADAI
-(Preparer)
+(Preprocessor)
 
 A script to download/check the data set in order to promise functionality
 Reference: Mozilla Voice Dataset - https://voice.mozilla.org/en/datasets
@@ -28,7 +28,7 @@ FILES = [
 ]
 
 
-class Preparer:
+class Preprocessor:
     def __init__(self, data_dir='.', download=False):
         self.root_dir = data_dir
         if download:
