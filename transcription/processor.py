@@ -43,5 +43,4 @@ class Processor:
         requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content)
                     for content in stream)
 
-
         return client.streaming_recognize(streaming_config, requests)
