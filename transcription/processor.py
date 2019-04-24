@@ -12,15 +12,6 @@ from os import environ
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
-from six.moves import queue
-
-import pyaudio
-import librosa
-import numpy as np
-import time
-import re
-import sys
-
 
 # Audio recording parameters
 RATE = 16000
@@ -29,7 +20,7 @@ CHUNK = int(RATE / 10)  # 100ms
 environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../hypnote-e16ff3ca8e86.json"
 print(environ["GOOGLE_APPLICATION_CREDENTIALS"])
 
-class Processor():
+
 class Processor:
     def __init__(self):
         self.isRunning = False
@@ -53,4 +44,4 @@ class Processor:
                     for content in stream)
 
 
-        return(client.streaming_recognize(streaming_config, requests))
+        return client.streaming_recognize(streaming_config, requests)
