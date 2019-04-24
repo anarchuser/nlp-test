@@ -8,17 +8,28 @@ Provides tools to transcript an audio stream
 """
 
 from __future__ import division
-from os import environ
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
+
+import os
+import fnmatch
 
 # Audio recording parameters
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
-environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../hypnote-e16ff3ca8e86.json"
-print(environ["GOOGLE_APPLICATION_CREDENTIALS"])
+
+# From StackOverflow (https://stackoverflow.com/questions/1724693/find-a-file-in-python)
+def findJSON(pattern, path):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if fnmatch.fnmatch(name, pattern):
+                return os.path.join(root, name)
+
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = findJSON("hypnote*.json", "../")
+print(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
 
 
 class Processor:
