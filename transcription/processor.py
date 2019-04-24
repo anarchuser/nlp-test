@@ -13,8 +13,6 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 
-import threading
-
 # Audio recording parameters
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
@@ -23,7 +21,7 @@ environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../hypnote-e16ff3ca8e86.json"
 print(environ["GOOGLE_APPLICATION_CREDENTIALS"])
 
 
-class Processor(threading.Thread):
+class Processor:
     def __init__(self):
         self.isRunning = False
 
