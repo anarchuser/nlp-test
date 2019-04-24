@@ -3,3 +3,4 @@ numpy
 pyaudio
 grpcio
 grpcio_tools
+pyphen

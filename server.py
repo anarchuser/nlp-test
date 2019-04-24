@@ -5,6 +5,8 @@ NOTEPADAI
 Server to transcript audio
 """
 
+import processor
+
 import audioStream_pb2_grpc
 import audioStream_pb2
 
@@ -55,8 +57,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
-        for Samples in request_iterator:
-            pass
+        yield processor.Processor().process(request_iterator)
         print("Connection Lost")
 
     def serve(self):
