@@ -57,4 +57,4 @@ class Brain:
     # Process audio given a trained NN
     # Takes features in form of MFCC - https://en.wikipedia.org/wiki/Mel-frequency_cepstrum
     def process(self, mfcc):
-        pass
+        return None

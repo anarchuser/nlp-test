@@ -7,9 +7,11 @@ NOTEPADAI
 Sends microphone input to the processor, for testing purposes
 """
 
-import pyaudio
 
 from transcription.processor import *
+from generated import audioStream_pb2_grpc, audioStream_pb2
+
+import pyaudio
 
 CHUNK = 256
 
@@ -25,9 +27,15 @@ class Microphone:
         self.process = processor.process(self.__to_array(mic))
 
     def start(self):
-        print(data for data in self.process)
+        for data in self.process:
+            print(data)
 
     def __to_array(self, stream):
         while True:
-            yield stream.read(CHUNK)
+            yield self.__to_sample(stream.read(CHUNK))
+
+    def __to_sample(self, chunk):
+        sample = audioStream_pb2.Samples()
+        sample.chunk = chunk
+        return sample
 

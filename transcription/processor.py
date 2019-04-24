@@ -28,13 +28,13 @@ class Processor:
         print("Start processing")
         self.isRunning = True
 
-        for samples in speech:
-            data = samples.chunk
+        for sample in speech:
+            data = sample.chunk
             features = self.extract_features(data)
             phoneme = self.recognize_phoneme(features)
             self.phonemes.put(phoneme)
             word = self.understand_word()
-            yield phoneme
+            yield word
 
         print("Stop processing")
         self.isRunning = False
