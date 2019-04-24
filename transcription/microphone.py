@@ -25,7 +25,8 @@ class Microphone:
         self.process = processor.process(self.__to_array(mic))
 
     def start(self):
-        print(data for data in self.process)
+        for data in self.process:
+            print(data)
 
     def __to_array(self, stream):
         while True:
