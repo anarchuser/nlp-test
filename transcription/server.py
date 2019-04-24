@@ -5,9 +5,8 @@ NOTEPADAI
 Server to transcript audio
 """
 
-import audioStream_pb2_grpc
-import audioStream_pb2
-from processor import *
+from generated import audioStream_pb2_grpc, audioStream_pb2
+from transcription.processor import *
 
 from concurrent import futures
 import grpc
@@ -22,22 +21,36 @@ WORKERS = 8                 # Max. amount of simultaneous threads
 """"""
 
 
-def is_valid(address):
-    try:
-        socket.inet_aton(address)
-    except socket.error:
-        return False
-    return True
+class Server:
+    def __init__(self, host=HOST, port=PORT, uptime=FOREVER, workers=WORKERS):
+        # Set up and start the server
+        print("Route servant - Default IP: " + host)
+        ip = self.get_valid_address(default=host)
 
+        print("Conceive servant")
+        self.servant = AudioProcessorServicer(host=ip, port=port, uptime=uptime, workers=workers)
 
-def get_valid_address(default):
-    address = input("Use different address?: ")
-    if address == '':
-        return default
-    if is_valid(address):
-        return address
-    else:
-        return get_valid_address(default)
+    def start(self):
+        print("Enliven servant")
+        self.servant.serve()
+
+        print("Kill servant")
+
+    def is_valid(self, address):
+        try:
+            socket.inet_aton(address)
+        except socket.error:
+            return False
+        return True
+
+    def get_valid_address(self, default):
+        address = input("Use different address?: ")
+        if address == '':
+            return default
+        if self.is_valid(address):
+            return address
+        else:
+            return self.get_valid_address(default)
 
 
 def string_to_response(word):
@@ -56,8 +69,9 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
-        yield Processor().process(request_iterator)
-        print("Connection Lost")
+        for word in Processor().process(request_iterator):
+            yield string_to_response(word)
+        print("Connection lost")
 
     def serve(self):
         print("Prepare servant")
@@ -72,17 +86,3 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         except KeyboardInterrupt:
             server.stop(None)
         print("Stop serving")
-
-
-if __name__ == "__main__":
-    # Set up and start the server
-    print("Route servant - Default IP: " + HOST)
-    ip = get_valid_address(default=HOST)
-
-    print("Conceive servant")
-    servant = AudioProcessorServicer(host=ip, port=PORT, uptime=FOREVER, workers=WORKERS)
-
-    print("Enliven servant")
-    servant.serve()
-
-    print("Kill servant")

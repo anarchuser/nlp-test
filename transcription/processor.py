@@ -12,7 +12,7 @@ import numpy as np
 import time
 
 
-class Processor():
+class Processor:
     def __init__(self):
         self.isRunning = False
 

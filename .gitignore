@@ -17,6 +17,10 @@
 # Include proto files:
 !proto/
 !*.proto
+!generated/
+
+# Include transcription package
+!transcription/
 
 # Include .gitignore and README
 !.gitignore
