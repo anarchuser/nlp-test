@@ -3,9 +3,5 @@ numpy
 pyaudio
 grpcio
 grpcio_tools
-pyphen
-librosa
-tensorflow
-pandas
 google
 google-cloud-speech
