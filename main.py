@@ -10,8 +10,6 @@ from transcription import microphone, server
 
 import sys
 
-INTERIM_RESULTS = True
-
 OPTIONS = {
     "server": server.Server,
     "microphone": microphone.Microphone
