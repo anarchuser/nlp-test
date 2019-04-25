@@ -7,7 +7,6 @@ NOTEPADAI
 Provides tools to transcript an audio stream
 """
 
-from __future__ import division
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -33,8 +32,9 @@ print(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
 
 
 class Processor:
-    def __init__(self, lang="de_DE"):
+    def __init__(self, lang="de_DE", send_interim_results=False):
         self.lang = lang
+        self.interim = send_interim_results
 
     def process(self, stream):
         print("Start processing")
@@ -48,9 +48,9 @@ class Processor:
             language_code=language_code)
         streaming_config = types.cloud_speech_pb2.StreamingRecognitionConfig(
             config=config,
-            interim_results=True)
+            interim_results=self.interim)
 
-        requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content)
+        requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content.chunk)
                     for content in stream)
 
         for response in client.streaming_recognize(streaming_config, requests):
@@ -61,8 +61,4 @@ class Processor:
             if not result.alternatives:
                 continue
 
-            if not result.is_final:
-                continue
-
             yield result.alternatives[0].transcript
-

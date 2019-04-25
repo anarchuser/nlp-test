@@ -7,3 +7,5 @@ pyphen
 librosa
 tensorflow
 pandas
+google
+google-cloud-speech
