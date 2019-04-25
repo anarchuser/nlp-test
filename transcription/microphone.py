@@ -22,7 +22,7 @@ class Microphone:
 
         # Parse processor parameters from the argv parameter list
         lang = "de_DE" if len(argv) < 1 else argv[0]
-        send_interim_results = len(argv) < 2 and False or bool(argv[1])
+        send_interim_results = False if len(argv) < 2 else bool(argv[1])
 
         # Initialise a new Processor object used in .start()
         self.processor = Processor(lang, send_interim_results)
