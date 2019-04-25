@@ -5,6 +5,7 @@ NOTEPADAI
 Transcripts a stream of audio in a stream of transcripts
 """
 
+import google
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -58,12 +59,16 @@ class Processor:
 
         # Parses the returning objects, filtering out the actual transcript
         # and yielding that (creating the actual response stream)
-        for response in client.streaming_recognize(streaming_config, requests):
-            if not response.results:
-                continue
+        try:
+            for response in client.streaming_recognize(streaming_config, requests):
+                if not response.results:
+                    continue
 
-            result = response.results[0]
-            if not result.alternatives:
-                continue
+                result = response.results[0]
+                if not result.alternatives:
+                    continue
 
-            yield result.alternatives[0].transcript
+                yield result.alternatives[0].transcript
+        except google.api_core.exceptions.OutOfRange:
+            return self.process(stream)
+
