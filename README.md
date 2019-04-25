@@ -8,17 +8,41 @@ Semesterproject SS2019 - [CODE University of Applied Sciences](https://code.berl
 
 ### About the project
 ##### Problem
+
 We focused on the following question:
 
 ```How might we support students in taking the most out of a lecture?```
 
 ##### Solution
+
 To help students listening to lectures while being able to take notes, we want to provide a mobile application which eases up on the part of taking notes.
 
 So, our goal is to provide an app which automatically transcripts a lecture while giving the student the opportunity to mark and edit the transcript on the fly.
 
 It listens to the [HypNote App](https://gitlab.com/julian.bertsch42/notepadai_app) and receives an audio stream from the microphone of the smartphone running said app.
 This stream is then send to the Google Cloud Speech API, which returns a stream of transcripted text.
+
+### Setup
+
+To use, clone this repo:
+
+```git clone https://gitlab.com/julian.bertsch42/notepadai_backend/tree/transcript-gcloud```
+
+Go into the clonde directory:
+
+```cd notepadai_backend```
+
+Install the requirements. Make sure to use python3
+
+```pip install -r requirements.txt```
+
+Start the server (Make sure it's connected to a non-blocking wifi):
+
+```./main.py server```
+
+If you want to test it locally using your device's microphone, run:
+
+```./main.py microphone```
 
 ### Technical documentation
 
