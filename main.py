@@ -10,7 +10,7 @@ from transcription import microphone, server
 
 import sys
 
-OPTIONS = {
+INPUT = {
     "server": server.Server,
     "microphone": microphone.Microphone
 }
@@ -26,7 +26,7 @@ ARGS = {
 def show_options():
     print("Syntax: " + sys.argv[0] + " [input] {arg1, arg2,...}")
     print("Input:")
-    for option in list(OPTIONS):
+    for option in list(INPUT):
         print("    " + option)
         for argc in range(len(ARGS[option])):
             print("        " + str(argc) + ": " + ARGS[option][argc])
@@ -42,7 +42,8 @@ else:
         sys.exit(2)
     else:
         try:
-            OPTIONS[sys.argv[1]](sys.argv[2:]).start()
+            # Start microphone or server
+            INPUT[sys.argv[1]](sys.argv[2:]).start()
         except KeyError:
             print("Unknown argument.")
             show_options()

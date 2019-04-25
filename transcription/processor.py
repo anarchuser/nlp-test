@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
-
 """
 NOTEPADAI
 (Processor)
 
-Provides tools to transcript an audio stream
+Transcripts a stream of audio in a stream of transcripts
 """
 
 from google.cloud import speech
@@ -19,7 +17,9 @@ RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
 
-# From StackOverflow (https://stackoverflow.com/questions/1724693/find-a-file-in-python)
+# Adopted from StackOverflow (https://stackoverflow.com/questions/1724693/find-a-file-in-python)
+# Recursively looks through local files looking for something that looks like a credentials file
+# (Returning the first occurrence)
 def findJSON(pattern, path):
     for root, dirs, files in os.walk(path):
         for name in files:
@@ -27,6 +27,7 @@ def findJSON(pattern, path):
                 return os.path.join(root, name)
 
 
+# Set a environment variable pointing at the location of the credentials file (hypnote*.json)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = findJSON("hypnote*.json", "../")
 print(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
 
@@ -41,6 +42,7 @@ class Processor:
 
         language_code = self.lang
 
+        # Configure connection to gcloud server
         client = speech.SpeechClient()
         config = types.cloud_speech_pb2.RecognitionConfig(
             encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
@@ -50,9 +52,12 @@ class Processor:
             config=config,
             interim_results=self.interim)
 
+        # Send all samples from the given audio stream to google
         requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content.chunk)
                     for content in stream)
 
+        # Parses the returning objects, filtering out the actual transcript
+        # and yielding that (creating the actual response stream)
         for response in client.streaming_recognize(streaming_config, requests):
             if not response.results:
                 continue

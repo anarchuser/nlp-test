@@ -1,8 +1,8 @@
 """
 NOTEPADAI
-(Main script)
+(Server)
 
-Server to transcript audio
+Server to connect to the world and transcript audio in a bidirectional stream
 """
 
 from generated import audioStream_pb2_grpc, audioStream_pb2
@@ -11,7 +11,6 @@ from transcription.processor import *
 from concurrent import futures
 import grpc
 import socket
-import time
 
 """ Constants: """
 HOST = '192.168.44.103'     # Server name
@@ -21,6 +20,7 @@ WORKERS = 8                 # Max. amount of simultaneous threads
 """"""
 
 
+# Class handling the AudioStreamServicer internally
 class Server:
     def __init__(self, host=HOST, port=PORT, uptime=FOREVER, workers=WORKERS):
         # Set up and start the server
@@ -62,6 +62,8 @@ def string_to_response(word):
     return response
 
 
+# Actual server connecting to the outer world.
+# Only used by the Server class
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
     def __init__(self, host, port, uptime, workers):
         print("Mark servant (" + str(port) + ")")
