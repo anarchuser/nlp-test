@@ -20,7 +20,7 @@ To help students listening to lectures while being able to take notes, we want t
 So, our goal is to provide an app which automatically transcripts a lecture while giving the student the opportunity to mark and edit the transcript on the fly.
 
 It listens to the [HypNote App](https://gitlab.com/julian.bertsch42/notepadai_app) and receives an audio stream from the microphone of the smartphone running said app.
-This stream is then send to the Google Cloud Speech API, which returns a stream of transcripted text.
+This stream is then send to the [Google Cloud Speech](https://cloud.google.com/speech-to-text/) API, which returns a stream of transcripted text.
 
 ### Setup
 
