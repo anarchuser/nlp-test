@@ -76,8 +76,8 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
         # Parse processor parameters from the argv parameter list
         self.lang = DEFAULT_LANG if len(argv) < 1 else argv[0]
-        self.print = False if len(argv) < 2 else bool(argv[1])
-        self.send_interim_results = False if len(argv) < 3 else bool(argv[2])
+        self.send_interim_results = False if len(argv) < 2 else bool(argv[1])
+        self.print = False if len(argv) < 3 else bool(argv[2])
 
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
 
