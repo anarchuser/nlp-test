@@ -11,6 +11,7 @@ from transcription.processor import *
 from concurrent import futures
 import grpc
 import socket
+import time
 
 """ Constants: """
 HOST = '192.168.44.103'     # Server name
@@ -24,18 +25,20 @@ DEFAULT_LANG = "de_DE"      # The default target language
 
 # Class handling the AudioStreamServicer internally
 class Server:
-    def __init__(self, host=HOST, port=PORT, uptime=FOREVER, workers=WORKERS, argv=None):
+    def __init__(self, argv=[]):
         # Set up and start the server
-        print("Route servant - Default IP: " + host)
-        ip = self.get_valid_address(default=host)
+        print("Route servant - Default IP: " + str(HOST))
+        ip = self.get_valid_address(default=HOST)
 
         print("Conceive servant")
         print(ip)
-        self.servant = AudioProcessorServicer(host=ip, port=port, uptime=uptime, workers=workers, argv=argv)
+        self.servant = AudioProcessorServicer(host=ip, port=PORT, workers=WORKERS, argv=argv)
 
     def start(self):
         print("Enliven servant")
         self.servant.serve()
+        time.sleep(FOREVER)
+        self.servant.murder()
 
     def stop(self):
         print("Kill servant")
@@ -61,27 +64,28 @@ class Server:
 # Actual server connecting to the outer world.
 # Only used by the Server class
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
-    def __init__(self, host, port, uptime, workers, argv):
+    def __init__(self, host, port, workers, argv):
         print("Mark servant (" + str(port) + ")")
         self.host = host
         self.port = port
-        self.uptime = uptime
         self.workers = workers
 
         # Parse processor parameters from the argv parameter list
         self.lang = DEFAULT_LANG if len(argv) < 1 else argv[0]
         self.send_interim_results = False if len(argv) < 2 else bool(argv[1])
         self.print = False if len(argv) < 3 else bool(argv[2])
+        print("  (Printing == " + str(self.print) + ")")
 
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
+
         processor = Processor(lang=self.lang, send_interim_results=self.send_interim_results)
         for word in processor.process(self.__sample_to_audio(request_iterator)):
             if self.print:
                 print(word)
-            yield string_to_response(word)
+            yield self.__string_to_response(word)
         print("Connection lost")
 
     def serve(self):
@@ -100,7 +104,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         for sample in samples:
             yield sample.chunk
 
-    def __string_to_response(word):
+    def __string_to_response(self, word):
         response = audioStream_pb2.Response()
         response.word = word
         return response

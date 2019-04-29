@@ -5,10 +5,7 @@ NOTEPADAI
 Transcripts a stream of audio in a stream of transcripts
 """
 
-import google
-from google.cloud import speech
-from google.cloud.speech import enums
-from google.cloud.speech import types
+import pyaudio
 
 import os
 import fnmatch
@@ -37,39 +34,20 @@ class Processor:
     def __init__(self, lang="de_DE", send_interim_results=False):
         self.lang = lang
         self.interim = send_interim_results
+        self.pa = pyaudio.PyAudio()
 
-    def process(self, stream):
+    def process(self, audio):
         print("Start processing")
 
-        language_code = self.lang
+        stream = self.pa.open(format=self.pa.get_format_from_width(width=2), channels=1, rate=RATE, output=True)
 
-        # Configure connection to gcloud server
-        client = speech.SpeechClient()
-        config = types.cloud_speech_pb2.RecognitionConfig(
-            encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=RATE,
-            language_code=language_code)
-        streaming_config = types.cloud_speech_pb2.StreamingRecognitionConfig(
-            config=config,
-            interim_results=self.interim)
+        for content in audio:
+            print(audio)
+            stream.write(content)
+            yield '.'
 
-        # Send all samples from the given audio stream to google
-        requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content)
-                    for content in stream)
+        stream.stop_stream()
+        stream.close()
 
-        # Parses the returning objects, filtering out the actual transcript
-        # and yielding that (creating the actual response stream)
-        try:
-            for response in client.streaming_recognize(streaming_config, requests):
-                if not response.results:
-                    continue
-
-                result = response.results[0]
-                if not result.alternatives:
-                    continue
-
-                yield result.alternatives[0].transcript
-        # Check for exception thrown if run for too long
-        except google.api_core.exceptions.OutOfRange:
-            return self.process(stream)
+        yield "End"
 

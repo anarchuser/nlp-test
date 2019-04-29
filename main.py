@@ -42,7 +42,7 @@ else:
         sys.exit(2)
     else:
         try:
-            # Start microphone or server
+            # Start microphone or server until stopped with Ctrl+C
             INPUT[sys.argv[1]](sys.argv[2:]).start()
         except KeyError:
             print("Unknown argument.")
