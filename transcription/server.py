@@ -58,12 +58,6 @@ class Server:
             return self.get_valid_address(default)
 
 
-def string_to_response(word):
-    response = audioStream_pb2.Response()
-    response.word = word
-    return response
-
-
 # Actual server connecting to the outer world.
 # Only used by the Server class
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
@@ -84,7 +78,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
         processor = Processor(lang=self.lang, send_interim_results=self.send_interim_results)
-        for word in processor.process(request_iterator):
+        for word in processor.process(self.__sample_to_audio(request_iterator)):
             if self.print:
                 print(word)
             yield string_to_response(word)
@@ -101,3 +95,14 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
     def murder(self):
         self.server.stop()
         print("Stop serving")
+
+    def __sample_to_audio(self, samples):
+        for sample in samples:
+            yield sample.chunk
+
+    def __string_to_response(word):
+        response = audioStream_pb2.Response()
+        response.word = word
+        return response
+
+

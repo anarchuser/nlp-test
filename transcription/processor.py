@@ -54,7 +54,7 @@ class Processor:
             interim_results=self.interim)
 
         # Send all samples from the given audio stream to google
-        requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content.chunk)
+        requests = (types.cloud_speech_pb2.StreamingRecognizeRequest(audio_content=content)
                     for content in stream)
 
         # Parses the returning objects, filtering out the actual transcript
@@ -69,6 +69,7 @@ class Processor:
                     continue
 
                 yield result.alternatives[0].transcript
+        # Check for exception thrown if run for too long
         except google.api_core.exceptions.OutOfRange:
             return self.process(stream)
 

@@ -7,15 +7,17 @@ Sends microphone input to the processor, for testing purposes
 
 
 from transcription.processor import *
-from generated import audioStream_pb2
 
 import pyaudio
+import sys
 
 CHUNK = int(RATE / 10)  # 100ms
 
 
 class Microphone:
     def __init__(self, argv):
+        self.isRunning = False
+
         print("Setting up audio stream")
         p = pyaudio.PyAudio()
         self.mic = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=CHUNK)
@@ -31,18 +33,16 @@ class Microphone:
     # Sends the audio stream from the microphone to the Processor object
     # and prints the result
     def start(self):
-        for data in self.processor.process(self.__generator__()):
-            print(data)
+        self.isRunning = True
+        try:
+            for data in self.processor.process(self.__generator__()):
+                print(data)
+        except KeyboardInterrupt:
+            self.isRunning = False
+            sys.exit(0)
 
     # transforms a stream of audio data into a stream of gRPC Samples
     # (which are used by the processor, so Microphone and Server can be changed interchangeably)
     def __generator__(self):
-        while True:
-            yield self.__to_sample(self.mic.read(CHUNK))
-
-    # Returns a new Sample object containing audio samples
-    def __to_sample(self, chunk):
-        sample = audioStream_pb2.Samples()
-        sample.chunk = chunk
-        return sample
-
+        while self.isRunning:
+            yield self.mic.read(CHUNK)
