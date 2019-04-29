@@ -42,7 +42,7 @@ class Processor:
         stream = self.pa.open(format=self.pa.get_format_from_width(width=2), channels=1, rate=RATE, output=True)
 
         for content in audio:
-            print(audio)
+            print(content)
             stream.write(content)
             yield '.'
 
