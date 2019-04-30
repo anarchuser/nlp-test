@@ -14,7 +14,7 @@ import socket
 import time
 
 """ Constants: """
-HOST = '192.168.44.103'     # Server name
+HOST = '192.168.43.51'     # Server name
 PORT = 12345                # Server port
 FOREVER = 1000000           # Large number to keep the server running.
 WORKERS = 8                 # Max. amount of simultaneous threads
