@@ -5,7 +5,7 @@ NOTEPADAI
 A tool to segment the audio samples (spoken and written words) into phonemes
 """
 
-FORMAT = "tsv"
+FORMAT = ".tsv"
 FILES = [
     "dev",
     "invalidated",
@@ -14,6 +14,7 @@ FILES = [
     "train",
     "validated"
 ]
+
 
 class Segment:
     def __init__(self, path='./'):
