@@ -10,27 +10,21 @@ from transcription.processor import *
 
 import pyaudio
 import sys
-import os
 
-import wave
-
+RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
 
 class Microphone:
-    def __init__(self, argv):
+    def __init__(self):
         self.isRunning = False
 
         print("Setting up audio stream")
         p = pyaudio.PyAudio()
-        self.mic = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=CHUNK)
-
-        # Parse processor parameters from the argv parameter list
-        lang = "de_DE" if len(argv) < 1 else argv[0]
-        send_interim_results = False if len(argv) < 2 else bool(argv[1])
+        self.mic = p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True, frames_per_buffer=CHUNK)
 
         # Initialise a new Processor object used in .start()
-        self.processor = Processor(lang, send_interim_results)
+        self.processor = Processor()
         print("Set up")
 
     # Sends the audio stream from the microphone to the Processor object
