@@ -25,14 +25,14 @@ DEFAULT_LANG = "de_DE"      # The default target language
 
 # Class handling the AudioStreamServicer internally
 class Server:
-    def __init__(self, argv=[]):
+    def __init__(self):
         # Set up and start the server
         print("Route servant - Default IP: " + HOST)
         ip = self.get_valid_address(default=HOST)
 
         print("Conceive servant")
         print(ip)
-        self.servant = AudioProcessorServicer(host=ip, port=PORT, uptime=FOREVER, workers=WORKERS, argv=argv)
+        self.servant = AudioProcessorServicer(host=ip, port=PORT, uptime=FOREVER, workers=WORKERS)
 
     def start(self):
         print("Enliven servant")
@@ -62,23 +62,18 @@ class Server:
 # Actual server connecting to the outer world.
 # Only used by the Server class
 class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
-    def __init__(self, host, port, uptime, workers, argv):
+    def __init__(self, host, port, uptime, workers):
         print("Mark servant (" + str(port) + ")")
         self.host = host
         self.port = port
         self.uptime = uptime
         self.workers = workers
 
-        # Parse processor parameters from the argv parameter list
-        self.lang = DEFAULT_LANG if len(argv) < 1 else argv[0]
-        self.send_interim_results = False if len(argv) < 2 else bool(argv[1])
-        self.print = False if len(argv) < 3 else bool(argv[2])
-
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.workers))
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
-        processor = Processor(lang=self.lang, send_interim_results=self.send_interim_results)
+        processor = Processor()
         for word in processor.process(self.__sample_to_audio(request_iterator)):
             if self.print:
                 print(word)
@@ -102,7 +97,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
         for sample in samples:
             yield sample.chunk
 
-    def __string_to_response(word):
+    def __string_to_response(self, word):
         response = audioStream_pb2.Response()
         response.word = word
         return response

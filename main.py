@@ -36,8 +36,8 @@ if __name__ != "__main__":
     print("Who the hell imports a file called main.py???")
     sys.exit(1)
 else:
-    if len(sys.argv) < 2:
-        print("Missing argument.")
+    if len(sys.argv) != 2:
+        print("Unexpected number of arguments.")
         show_options()
         sys.exit(2)
     else:
