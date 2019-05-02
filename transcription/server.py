@@ -85,6 +85,7 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
         print("Start serving")
         self.server.start()
+        time.sleep(self.uptime)
 
     def murder(self):
         self.server.stop()
