@@ -49,17 +49,19 @@ class Prepare:
 
         self.__check_lang()
 
+        try:
+            os.mkdir(os.path.join(path, lang))
+        except OSError:
+            pass
+        self.path = os.path.join(self.path, lang)
+
         if mode is "download":
-            try:
-                os.mkdir(os.path.join(path, lang))
-            except OSError:
-                pass
             self.archive = os.path.join(path, lang, lang + ".tar.gz")
             self.__download_data(show_progress)
         elif mode is "extract":
             self.archive = os.path.join(path, lang + ".tar.gz")
         else:
-            print("Invalid mode. Valid modes are 'download','extract'")
+            print("Invalid mode. Valid modes are 'download' and 'extract'.")
             sys.exit(3)
 
         self.__extract_data()
@@ -71,7 +73,8 @@ class Prepare:
         if self.lang not in VALID_LANGUAGES.keys():
             print("Invalid language code.")
             print("Currently available languages are:")
-            print((key + "  - " + value) for key, value in VALID_LANGUAGES)
+            for key in VALID_LANGUAGES:
+                print(key + "  - " + VALID_LANGUAGES[key])
             sys.exit(2)
 
     def __download_data(self, show_progress=False):
