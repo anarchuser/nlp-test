@@ -28,8 +28,7 @@ class Processor:
         print("Start processing")
         self.isRunning = True
 
-        for sample in speech:
-            data = sample.chunk
+        for data in speech:
             features = self.extract_features(data)
             phoneme = self.recognize_phoneme(features)
             self.phonemes.put(phoneme)
