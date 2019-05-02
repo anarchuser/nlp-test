@@ -22,8 +22,8 @@ class Segment:
     def __load_tables(self):
         pass
 
-    def __segment_text:
+    def __segment_text(self):
         pass
 
-    def __segment_speech:
+    def __segment_speech(self):
         pass
