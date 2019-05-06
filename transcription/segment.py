@@ -42,5 +42,5 @@ class Segment:
         #  Load mp3 file
         #  Convert it to wav
         #  Look how many phonemes there should be
-        #  Try to locate them (-> TRAIN A CLASSIFIER!!!)
+        #  Try to locate them
         pass
