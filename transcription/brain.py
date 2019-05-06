@@ -56,3 +56,10 @@ class Brain:
     # Takes features in form of MFCC - https://en.wikipedia.org/wiki/Mel-frequency_cepstrum
     def process(self, mfcc):
         return None
+
+
+# Function to split an audio stream into a phoneme stream
+def split_phonemes(stream):
+    for samples in stream:
+        # TODO: Return separated segments
+        pass
