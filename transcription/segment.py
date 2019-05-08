@@ -13,7 +13,7 @@ import matplotlib.pyplot as mp
 
 import os
 
-CHUNK = 256  # Window Size
+CHUNK = 320  # Window Size
 
 FORMAT = ".tsv"
 TABLES = [
@@ -39,7 +39,7 @@ class Segment:
 
     def segment(self, printout=False):
         self.__segment_text()
-        self.__segment_speech(printout)
+        return self.__segment_speech(printout)
 
     def __segment_text(self):
         # TODO:
@@ -52,11 +52,17 @@ class Segment:
         try:
             if printout:
                 audio, sr = librosa.load(os.path.join(self.path, "mp3", self.tables['validated'].path[0] + ".mp3"))
+                """
+                for value in brain.split_phonemes(self.__audio_to_stream(audio)):
+                    print(value)
+                    yield value
+                """
                 mp.plot([value for value in brain.split_phonemes(self.__audio_to_stream(audio))])
-                mp.ylabel("Difference")
-                mp.xlabel("Time")
+                mp.plot([value for value in brain.split_phonemes_2(self.__audio_to_stream(audio))])
+                mp.ylabel("Something something")
+                mp.xlabel("Time in t/50 seconds")
                 mp.show()
-
+                #"""#
             else:
                 for table in TABLES:
                     # TODO: Write to TSV
@@ -73,4 +79,6 @@ class Segment:
         while True:
             samples = audio[:CHUNK]
             audio = audio[CHUNK:]
+            if len(audio) is 0:
+                break
             yield samples

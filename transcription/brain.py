@@ -104,3 +104,40 @@ def is_different(win_a, win_b):
     return diff
     return False
     #return diff > BORDER
+
+def split_phonemes_2(stream):
+    mem = stream.__next__()
+    SAMPLES_PER_WINDOW = len(mem)
+    timesteps = 0
+    stream.__next__()
+    for samples in stream:
+        samples += SAMPLES_PER_WINDOW
+
+        window = processor.arr_to_librosa(samples)
+        try:
+            window = librosa.feature.mfcc(window)
+        except ValueError:
+            continue
+
+        try:
+            yield is_different_2(window)
+
+            #if is_different(mem, window):
+            #    yield timesteps
+        except IndexError:
+            pass
+        except ValueError:
+            pass
+        except RuntimeError:
+            pass
+
+
+def is_different_2(window):
+    summ = 0
+    for i in range(len(window)):
+        for j in range(2):
+            summ += abs(window[i][j])
+
+    return summ
+    return False
+    #return diff > BORDER
