@@ -12,9 +12,15 @@ from transcription import processor
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
+import librosa
+
 
 from os import path
+import sys
 from pydub import AudioSegment
+
+
+BORDER = 0  # Border to detect different syllables
 
 
 class Brain:
@@ -62,18 +68,39 @@ class Brain:
 
 # Function to split an audio stream into a phoneme stream
 def split_phonemes(stream):
-    mem = processor.arr_to_librosa(stream.__next__())
+    mem = stream.__next__()
     SAMPLES_PER_WINDOW = len(mem)
-    timesteps = SAMPLES_PER_WINDOW
+    timesteps = 0
     for samples in stream:
         samples += SAMPLES_PER_WINDOW
-        window = processor.arr_to_librosa(samples)
 
-        if is_different(mem, window):
-            yield timesteps
+        window = processor.arr_to_librosa(samples)
+        try:
+            window = librosa.feature.mfcc(window)
+        except ValueError:
+            continue
+
+        try:
+            yield is_different(mem, window)
+
+            #if is_different(mem, window):
+            #    yield timesteps
+        except IndexError:
+            pass
+        except ValueError:
+            pass
+        except RuntimeError:
+            pass
 
         mem = window
 
 
 def is_different(win_a, win_b):
-    pass
+    diff = 0
+    for i in range(len(win_a)):
+        for j in range(2):
+            diff += abs(win_b[i][j] - win_a[i][j])
+
+    return diff
+    return False
+    #return diff > BORDER
