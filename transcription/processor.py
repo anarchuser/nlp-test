@@ -37,12 +37,16 @@ class Processor:
         self.isRunning = False
 
     def extract_features(self, window):
-        samples_b = np.array(window)
-        samples_f = librosa.util.buf_to_float(samples_b)
-        return librosa.feature.mfcc(samples_f)
+        samples = arr_to_librosa(window)
+        return librosa.feature.mfcc(samples)
 
     def recognize_phoneme(self, mfcc):
         return self.brain.process(mfcc)
 
     def understand_word(self):
         return "Transmission!"
+
+
+def arr_to_librosa(arr):
+    samples = np.array(arr)
+    return librosa.util.buf_to_float(samples)

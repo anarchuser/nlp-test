@@ -62,4 +62,4 @@ class Brain:
 def split_phonemes(stream):
     for samples in stream:
         # TODO: Return separated segments
-        pass
+        yield samples
