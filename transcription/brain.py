@@ -7,6 +7,8 @@ Data Set: provided by Mozilla's Voice project to provide training data for speec
 (
 """
 
+from transcription import processor
+
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
@@ -60,6 +62,18 @@ class Brain:
 
 # Function to split an audio stream into a phoneme stream
 def split_phonemes(stream):
+    mem = processor.arr_to_librosa(stream.__next__())
+    SAMPLES_PER_WINDOW = len(mem)
+    timesteps = SAMPLES_PER_WINDOW
     for samples in stream:
-        # TODO: Return separated segments
-        yield samples
+        samples += SAMPLES_PER_WINDOW
+        window = processor.arr_to_librosa(samples)
+
+        if is_different(mem, window):
+            yield timesteps
+
+        mem = window
+
+
+def is_different(win_a, win_b):
+    pass

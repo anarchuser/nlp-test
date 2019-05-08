@@ -5,6 +5,7 @@ NOTEPADAI
 A tool to segment the audio samples (spoken and written words) into phonemes
 """
 
+
 import pandas as pd
 
 import os
@@ -24,6 +25,9 @@ class Segment:
     def __init__(self, path='./'):
         self.path = path
         self.tables = {}
+        self.__load_tables()
+        self.__segment_text()
+        self.__segment_speech()
 
     # Load all tsv files into a dict
     def __load_tables(self):
