@@ -11,3 +11,4 @@ tqdm
 requests
 pypeaks
 matplotlib
+pydub
