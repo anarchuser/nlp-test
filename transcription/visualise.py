@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 """
 NOTEPADAI
 (Visualiser)
@@ -51,3 +52,17 @@ class Visualise:
 
     def as_stream(self):
         pass
+||||||| merged common ancestors
+=======
+"""
+NOTEPADAI
+(Visualiser)
+
+A data science tool to produce cool graphs accompanying the process of speech recognition
+"""
+
+
+class Visualise:
+    def __init__(self):
+        pass
+>>>>>>> Added visualiser
