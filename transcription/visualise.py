@@ -37,4 +37,3 @@ A data science tool to produce cool graphs accompanying the process of speech re
 class Visualise:
     def __init__(self):
         pass
->>>>>>> Added visualiser
