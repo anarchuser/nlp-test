@@ -67,6 +67,10 @@ class Brain:
 
 
 # Function to split an audio stream into a phoneme stream
+def split_phonemes(stream):
+    pass
+
+
 def mfcc_derivative(stream):
     mem = stream.__next__()
     SAMPLES_PER_WINDOW = len(mem)
