@@ -67,7 +67,7 @@ class Brain:
 
 
 # Function to split an audio stream into a phoneme stream
-def split_phonemes(stream):
+def mfcc_derivative(stream):
     mem = stream.__next__()
     SAMPLES_PER_WINDOW = len(mem)
     timesteps = 0
@@ -81,7 +81,7 @@ def split_phonemes(stream):
             continue
 
         try:
-            yield is_different(mem, window)
+            yield is_different_mfcc_d(mem, window)
 
             #if is_different(mem, window):
             #    yield timesteps
@@ -95,7 +95,7 @@ def split_phonemes(stream):
         mem = window
 
 
-def is_different(win_a, win_b):
+def is_different_mfcc_d(win_a, win_b):
     diff = 0
     for i in range(len(win_a)):
         for j in range(2):
@@ -105,7 +105,8 @@ def is_different(win_a, win_b):
     return False
     #return diff > BORDER
 
-def split_phonemes_2(stream):
+
+def mfcc(stream):
     mem = stream.__next__()
     SAMPLES_PER_WINDOW = len(mem)
     timesteps = 0
@@ -120,7 +121,7 @@ def split_phonemes_2(stream):
             continue
 
         try:
-            yield is_different_2(window)
+            yield is_different_mfcc(window)
 
             #if is_different(mem, window):
             #    yield timesteps
@@ -132,9 +133,9 @@ def split_phonemes_2(stream):
             pass
 
 
-def is_different_2(window):
+def is_different_mfcc(window):
     summ = 0
-    for i in range(len(window)):
+    for i in range(1, len(window)):
         for j in range(2):
             summ += abs(window[i][j])
 

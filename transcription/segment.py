@@ -13,7 +13,7 @@ import matplotlib.pyplot as mp
 
 import os
 
-CHUNK = 320  # Window Size
+CHUNK = 640  # Window Size
 
 FORMAT = ".tsv"
 TABLES = [
@@ -57,10 +57,13 @@ class Segment:
                     print(value)
                     yield value
                 """
-                mp.plot([value for value in brain.split_phonemes(self.__audio_to_stream(audio))])
-                mp.plot([value for value in brain.split_phonemes_2(self.__audio_to_stream(audio))])
+                chunk = int(sr / 50)
+                chunk = 320
+
+                mp.plot([value + 1000 for value in brain.mfcc(self.__audio_to_stream(audio, chunk))])
+                mp.plot([value for value in brain.mfcc_derivative(self.__audio_to_stream(audio, chunk))])
                 mp.ylabel("Something something")
-                mp.xlabel("Time in t/50 seconds")
+                mp.xlabel("Time in t/" + str(sr/chunk) + " seconds (Sample rate: " + str(sr) + ")")
                 mp.show()
                 #"""#
             else:
@@ -75,10 +78,10 @@ class Segment:
 
         pass
 
-    def __audio_to_stream(self, audio):
+    def __audio_to_stream(self, audio, chunk):
         while True:
-            samples = audio[:CHUNK]
-            audio = audio[CHUNK:]
+            samples = audio[:chunk]
+            audio = audio[chunk:]
             if len(audio) is 0:
                 break
             yield samples
