@@ -4,7 +4,6 @@ NOTEPADAI
 
 Listens to music for hours and then tries to understand you - phonemes only
 Data Set: provided by Mozilla's Voice project to provide training data for speech recognition algorithms
-(
 """
 
 import pandas as pd
