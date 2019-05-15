@@ -1,27 +1,7 @@
-# Exclude files per default:
-*
+Data/*
+venv/*
+.idea/*
 
-# Include Python and C/C++ files again:
-!*.py
-!*.c
-!*.cpp
-!*.h
-!*.hpp
-
-# Include requirements.txt:
-!requirements.txt
-
-# Include proto regen file:
-!regen_proto.sh
-
-# Include proto files:
-!proto/
-!*.proto
-!generated/
-
-# Include transcription package
-!transcription/
-
-# Include .gitignore and README
-!.gitignore
-!README.md
+hypnote.json
+.gitignore
+.gitignore.bak
