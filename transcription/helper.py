@@ -54,6 +54,14 @@ def audio_to_stream(audio, chunk=CHUNK):
 
 
 # TODO:
+# Function to split a sentence into its phonetic spelling
+# @in:  string
+# @out: stream(string)
+def split_spellings(sentence):
+    yield None
+
+
+# TODO:
 # Function to split an audio stream into a phoneme stream
 # @in:  stream(librosa_array)
 # @out: stream(mfcc)
