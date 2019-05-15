@@ -50,7 +50,7 @@ class Segment:
         for table in TABLES:
             # TODO: Write to TSV
             for sentence in self.tables[table].sentence:
-                for phoneme in split_spellings(sentence):
+                for spelling in split_spellings(sentence):
                     pass
 
     def __segment_speech(self, printout=False):
