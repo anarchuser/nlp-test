@@ -60,89 +60,10 @@ class Brain:
         print(test_tsv.columns)
         pass
 
+    # TODO
     # Process audio given a trained NN
     # Takes features in form of MFCC - https://en.wikipedia.org/wiki/Mel-frequency_cepstrum
-    def process(self, mfcc):
-        return None
+    def process(self, phonemes):
+        for phoneme in phonemes:
+            yield phoneme
 
-
-# Function to split an audio stream into a phoneme stream
-def split_phonemes(stream):
-    pass
-
-
-def mfcc_derivative(stream):
-    mem = stream.__next__()
-    SAMPLES_PER_WINDOW = len(mem)
-    timesteps = 0
-    for samples in stream:
-        samples += SAMPLES_PER_WINDOW
-
-        window = processor.arr_to_librosa(samples)
-        try:
-            window = librosa.feature.mfcc(window)
-        except ValueError:
-            continue
-
-        try:
-            yield is_different_mfcc_d(mem, window)
-
-            #if is_different(mem, window):
-            #    yield timesteps
-        except IndexError:
-            pass
-        except ValueError:
-            pass
-        except RuntimeError:
-            pass
-
-        mem = window
-
-
-def is_different_mfcc_d(win_a, win_b):
-    diff = 0
-    for i in range(len(win_a)):
-        for j in range(2):
-            diff += abs(win_b[i][j] - win_a[i][j])
-
-    return diff
-    return False
-    #return diff > BORDER
-
-
-def mfcc(stream):
-    mem = stream.__next__()
-    SAMPLES_PER_WINDOW = len(mem)
-    timesteps = 0
-    stream.__next__()
-    for samples in stream:
-        samples += SAMPLES_PER_WINDOW
-
-        window = processor.arr_to_librosa(samples)
-        try:
-            window = librosa.feature.mfcc(window)
-        except ValueError:
-            continue
-
-        try:
-            yield is_different_mfcc(window)
-
-            #if is_different(mem, window):
-            #    yield timesteps
-        except IndexError:
-            pass
-        except ValueError:
-            pass
-        except RuntimeError:
-            pass
-
-
-def is_different_mfcc(window):
-    summ = 0
-    for i in range(1, len(window)):
-        for j in range(2):
-            summ += abs(window[i][j])
-
-    return summ
-    return False
-    #return diff > BORDER

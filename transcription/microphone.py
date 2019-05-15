@@ -7,6 +7,7 @@ Sends microphone input to the processor, for testing purposes
 
 
 from transcription.processor import *
+from transcription.helper import *
 
 import pyaudio
 import sys

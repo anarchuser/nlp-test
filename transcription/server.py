@@ -5,8 +5,9 @@ NOTEPADAI
 Server to connect to the world and transcript audio in a bidirectional stream
 """
 
-from generated import audioStream_pb2_grpc, audioStream_pb2
+from generated import audioStream_pb2_grpc
 from transcription.processor import *
+from transcription.helper import *
 
 from concurrent import futures
 import grpc
@@ -73,11 +74,11 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
 
     def transcriptAudio(self, request_iterator, context):
         print("Connection received")
-        processor = Processor()
-        for word in processor.process(self.__sample_to_audio(request_iterator)):
+        proc = Processor()
+        for word in proc.process(sample_to_audio(request_iterator)):
             if self.print:
                 print(word)
-            yield self.__string_to_response(word)
+            yield string_to_response(word)
         print("Connection lost")
 
     def serve(self):
@@ -92,14 +93,4 @@ class AudioProcessorServicer(audioStream_pb2_grpc.AudioProcessorServicer):
     def murder(self):
         self.server.stop()
         print("Stop serving")
-
-    def __sample_to_audio(self, samples):
-        for sample in samples:
-            yield sample.chunk
-
-    def __string_to_response(self, word):
-        response = audioStream_pb2.Response()
-        response.word = word
-        return response
-
 

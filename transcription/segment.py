@@ -6,6 +6,7 @@ A tool to segment the audio samples (spoken and written words) into phonemes
 """
 
 from transcription import brain
+from transcription.helper import *
 
 import pandas as pd
 import librosa
@@ -52,36 +53,23 @@ class Segment:
         try:
             if printout:
                 audio, sr = librosa.load(os.path.join(self.path, "mp3", self.tables['validated'].path[0] + ".mp3"))
-                """
-                for value in brain.split_phonemes(self.__audio_to_stream(audio)):
-                    print(value)
-                    yield value
-                """
                 chunk = int(sr / 50)
                 chunk = 320
 
-                mp.plot([value + 1000 for value in brain.mfcc(self.__audio_to_stream(audio, chunk))])
-                mp.plot([value for value in brain.mfcc_derivative(self.__audio_to_stream(audio, chunk))])
+                mp.plot([value + 1000 for value in mfcc(stream_to_librosa(audio_to_stream(audio, chunk)))])
+                mp.plot([value for value in mfcc_d(stream_to_librosa(audio_to_stream(audio, chunk)))])
                 mp.ylabel("Something something")
                 mp.xlabel("Time in t/" + str(sr/chunk) + " seconds (Sample rate: " + str(sr) + ")")
                 mp.show()
-                #"""#
             else:
                 for table in TABLES:
                     # TODO: Write to TSV
                     for file in self.tables[table].path:
                         audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
-                        for timestamp in brain.split_phonemes(self.__audio_to_stream(audio)):
+                        for timestamp in split_phonemes(stream_to_librosa(audio_to_stream(audio))):
                             print(timestamp)
         except RuntimeError:
             pass
 
         pass
 
-    def __audio_to_stream(self, audio, chunk):
-        while True:
-            samples = audio[:chunk]
-            audio = audio[chunk:]
-            if len(audio) is 0:
-                break
-            yield samples
