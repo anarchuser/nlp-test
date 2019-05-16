@@ -2,13 +2,17 @@
 List of functions used by several packages
 """
 
-from generated import audioStream_pb2
+#from generated import audioStream_pb2
+from nltk import tokenize
 
 import librosa
 import numpy as np
+import pronouncing
+import inflect
 
 CHUNK = 320
 
+inflect_engine = inflect.engine()
 
 # Maps a stream of gRPC samples to a stream of actual audio samples
 # @in:  stream(Samples)
@@ -58,8 +62,36 @@ def audio_to_stream(audio, chunk=CHUNK):
 # @in:  string
 # @out: stream(string)
 def split_spellings(sentence):
-    yield None
+    pre_word_array = tokenize.word_tokenize(sentence)
+    word_array = pre_word_array
+    phonems = []
+    for word in range(len(pre_word_array)):
+        if pre_word_array[word].isdigit() == True:
+            small_counter = 0
+            numword = inflect_engine.number_to_words(pre_word_array[word])
+            del word_array[word]
+            numword = numword.replace(",", "")
+            numword = numword.replace("-", " ")
+            if " " in numword:
+                no = numword.split(" ")
+                insert_list_list(word_array, no, word)
+    for word2 in word_array:
+        phonem = pronouncing.phones_for_word(word2)[0]
+        phonems.append(phonem)
+        #print(phonem)
+        #yield phonem
+    print(word_array)
+    print(phonems)
+    #yield phonems
 
+#inserts all items of list2 into list1 at index - basically combines 'insert' with 'extend'
+def insert_list_list(list1, list2, index_list1=0):
+    short = 0
+    for i in range(len(list2)):
+        index0 = int(index_list1 + short)
+        list1.insert(index0, list2[i])
+        short += 1
+    return list1
 
 # TODO:
 # Function to split an audio stream into a phoneme stream
@@ -85,3 +117,5 @@ def mfcc_d(stream):
     for coefficients in stream:
         yield mem - coefficients
         mem = coefficients
+
+split_spellings("This is a very beautiful day amongst the 365")
