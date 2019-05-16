@@ -1,14 +1,17 @@
 # Package requirements for python:
-numpy
-pyaudio
 grpcio
 grpcio_tools
-pyphen
+inflect
 librosa
-tensorflow
-pandas
-tqdm
-requests
-pypeaks
 matplotlib
+nltk
+numpy
+pandas
+pronouncing
+pyaudio
+pypeaks
+pyphen
 pydub
+requests
+tensorflow
+tqdm
