@@ -25,7 +25,7 @@ class Visualise:
         self.__player__.play()
 
     def mfcc(self):
-        return [convert(data) for data in self.as_mfcc_stream()]
+        pass
 
     def mfcc_d(self):
         pass
@@ -50,7 +50,3 @@ def specgram(obj, xlabel=None, ylabel=None, axis=None, chunk=CHUNK):
         s.axis(axis)
 
     s.show()
-
-
-def convert(coefficients):
-    return [data for data in [pair for pair in coefficients]]
