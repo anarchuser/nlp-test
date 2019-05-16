@@ -82,12 +82,14 @@ def split_spellings(sentence):
     print(phonems)
     #yield phonems
 
-#inserts all items of list2 into list1 at index - basically combines 'insert' with 'extend'
+
+# inserts all items of list2 into list1 at index - basically combines 'insert' with 'extend'
 def insert_list_list(list1, list2, index_list1=0):
     for i in range(len(list2)):
         index0 = int(index_list1 + i)
         list1.insert(index0, list2[i])
     return list1
+
 
 # TODO:
 # Function to split an audio stream into a phoneme stream
