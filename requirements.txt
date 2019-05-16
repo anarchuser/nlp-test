@@ -12,3 +12,4 @@ requests
 pypeaks
 matplotlib
 pydub
+python-vlc
