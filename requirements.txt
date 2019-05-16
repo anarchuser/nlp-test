@@ -12,6 +12,7 @@ pyaudio
 pypeaks
 pyphen
 pydub
+python-vlc
 requests
 tensorflow
 tqdm
