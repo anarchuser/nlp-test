@@ -2,7 +2,7 @@
 List of functions used by several packages
 """
 
-#from generated import audioStream_pb2
+from generated import audioStream_pb2
 from nltk import tokenize
 
 import librosa
@@ -13,6 +13,7 @@ import inflect
 CHUNK = 320
 
 inflect_engine = inflect.engine()
+
 
 # Maps a stream of gRPC samples to a stream of actual audio samples
 # @in:  stream(Samples)
