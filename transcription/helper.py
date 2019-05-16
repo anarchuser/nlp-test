@@ -77,12 +77,7 @@ def split_spellings(sentence):
                 insert_list_list(word_array, no, word)
         phonem = pronouncing.phones_for_word(word_array[word])[0]
         phonems.append(phonem)
-        #print(phonem)
-        #yield phonem
-    print(word_array)
-    print(phonems)
-    #yield phonems
-
+        yield phonem
 
 # inserts all items of list2 into list1 at index - basically combines 'insert' with 'extend'
 def insert_list_list(list1, list2, index_list1=0):
@@ -116,5 +111,3 @@ def mfcc_d(stream):
     for coefficients in stream:
         yield mem - coefficients
         mem = coefficients
-
-split_spellings("This is a very beautiful day amongst the 365 days of the year")
