@@ -86,13 +86,13 @@ def split_spellings(sentence, full_pronounciation_output=False):
             if " " in numword:
                 numword = numword.split(" ")
             for element in numword:
-                output = pronouncing.phones_for_word(element)[0]
+                output = pronouncing.phones_for_word(element)
                 if not full_pronounciation_output:
                     yield output[0]
                 else:
                     yield output
         else:
-            output = pronouncing.phones_for_word(word)[0]
+            output = pronouncing.phones_for_word(word)
             if not full_pronounciation_output:
                 yield output[0]
             else:
@@ -100,8 +100,10 @@ def split_spellings(sentence, full_pronounciation_output=False):
 
 
 def string_cleaner(words):
-    words.replace(PUNCTUATION, "")
-    words.replace(DASHES, " ")
+    for i in range(len(PUNCTUATION)):
+        words = words.replace(PUNCTUATION[i], "")
+    for i in range(len(DASHES)):
+        words = words.replace(DASHES[i], " ")
     return words
 
 
