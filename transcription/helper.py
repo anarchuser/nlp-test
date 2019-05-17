@@ -62,14 +62,19 @@ def audio_to_stream(audio, chunk=CHUNK):
 # @in:  string
 # @out: stream(string)
 def split_spellings(sentence):
-    word_array = tokenize.word_tokenize(sentence)
-    phonems = []
+    word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
+    print(word_array)
     for word in word_array:
+        word = word.replace(",", "")
+        word = word.replace(".", "")
+        word = word.replace("-", "")
+        if word == "":
+            continue
         if word.isdigit():
-            small_counter = 0
             numword = inflect_engine.number_to_words(word)
             numword = numword.replace(",", "")
             numword = numword.replace("-", " ")
+            print(numword)
             if " " in numword:
                 numword = numword.split(" ")
                 #insert_list_list(word_array, no, word)
