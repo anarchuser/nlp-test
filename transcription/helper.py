@@ -58,6 +58,7 @@ def audio_to_stream(audio, chunk=CHUNK):
             break
 
 
+#TODO- or not TODO
 # Function to split a sentence into its phonetic spelling
 # @in:  string
 # @out: stream(string)
