@@ -12,6 +12,9 @@ import inflect
 
 CHUNK = 320
 
+PUNCTUATION = (",", ".", ";", "!", "?", "\"")
+DASHES = ("_", "-")
+
 inflect_engine = inflect.engine()
 
 
@@ -96,11 +99,9 @@ def split_spellings(sentence, full_pronounciation_output=False):
                 yield output
 
 
-zero_back = (",", ".", ";", "!", "?", "\"")
-one_back = ("_", "-")
 def string_cleaner(words):
-    words.replace(zero_back, "")
-    words.replace(one_back, " ")
+    words.replace(PUNCTUATION, "")
+    words.replace(DASHES, " ")
     return words
 
 
