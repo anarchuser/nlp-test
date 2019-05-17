@@ -11,15 +11,26 @@ from transcription.helper import *
 import librosa
 import vlc
 import matplotlib.pyplot as plt
+import pandas as pd
 
 CHUNK = 320
 
 
 class Visualise:
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, path, tsv=None):
+        if path[-4:] == ".mp3":
+            self.path = path
+            self.id = path[-132:-4]
+        else:
+            self.path = path + ".mp3"
+            self.id = path
+
+        print(self.id)
         self.data, self.sample_rate = librosa.load(path)
         self.__player__ = vlc.MediaPlayer(path)
+        if tsv is not None:
+            table = pd.read_csv(tsv, sep='\t')
+            self.metadata = table.query("path == @self.id")
 
     def play(self):
         self.__player__.play()
