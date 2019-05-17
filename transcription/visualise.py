@@ -38,7 +38,7 @@ class Visualise:
         self.__player__ = vlc.MediaPlayer(self.path)
 
     def phonemes(self):
-        return split_spellings(str(self.metadata["sentence"]))
+        return split_spellings(str(self.metadata["sentence"].str.get_dummies()))
 
     def mfcc(self):
         pass
