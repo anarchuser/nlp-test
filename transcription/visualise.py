@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 CHUNK = 320
+MAX_COLUMNS = 200  # Output of Pandas DataFrames
 
 
 class Visualise:
@@ -25,15 +26,19 @@ class Visualise:
             self.path = path + ".mp3"
             self.id = path
 
-        print(self.id)
         self.data, self.sample_rate = librosa.load(path)
         self.__player__ = vlc.MediaPlayer(path)
         if tsv is not None:
+            pd.options.display.max_colwidth = MAX_COLUMNS
             table = pd.read_csv(tsv, sep='\t')
-            self.metadata = table.query("path == @self.id")
+            self.metadata = pd.DataFrame(table.query("path == @self.id"))
 
     def play(self):
         self.__player__.play()
+        self.__player__ = vlc.MediaPlayer(self.path)
+
+    def phonemes(self):
+        return split_spellings(str(self.metadata["sentence"]))
 
     def mfcc(self):
         pass
