@@ -61,7 +61,7 @@ def audio_to_stream(audio, chunk=CHUNK):
 # Function to split a sentence into its phonetic spelling
 # @in:  string
 # @out: stream(string)
-def split_spellings(sentence):
+def split_spellings(sentence, full_pronounciation_output=False):
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
     print(word_array)
     for word in word_array:
@@ -79,9 +79,17 @@ def split_spellings(sentence):
                 numword = numword.split(" ")
                 #insert_list_list(word_array, no, word)
             for element in numword:
-                yield pronouncing.phones_for_word(element)[0]
+                output = pronouncing.phones_for_word(element)[0]
+                if full_pronounciation_output == False:
+                    yield output[0]
+                else:
+                    yield output
         else:
-            yield pronouncing.phones_for_word(word)[0]
+            output = pronouncing.phones_for_word(word)[0]
+            if full_pronounciation_output == False:
+                yield output[0]
+            else:
+                yield output
 
 
 # TODO:
