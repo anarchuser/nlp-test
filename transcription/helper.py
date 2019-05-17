@@ -65,19 +65,15 @@ def split_spellings(sentence, full_pronounciation_output=False):
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
     print(word_array)
     for word in word_array:
-        word = word.replace(",", "")
-        word = word.replace(".", "")
-        word = word.replace("-", "")
+        word = string_cleaner(word)
         if word == "":
             continue
         if word.isdigit():
             numword = inflect_engine.number_to_words(word)
-            numword = numword.replace(",", "")
-            numword = numword.replace("-", " ")
+            numword = string_cleaner(numword)
             print(numword)
             if " " in numword:
                 numword = numword.split(" ")
-                #insert_list_list(word_array, no, word)
             for element in numword:
                 output = pronouncing.phones_for_word(element)[0]
                 if full_pronounciation_output == False:
@@ -90,6 +86,16 @@ def split_spellings(sentence, full_pronounciation_output=False):
                 yield output[0]
             else:
                 yield output
+
+
+def string_cleaner(words):
+    zero_back = set(",", ".", ";", "!", "?", "\"")
+    one_back = set("_", "-")
+    for i in zero_back:
+        words.replace(i, "")
+    for i in one_back:
+        words.replace(i, " ")
+    return words
 
 
 # TODO:
