@@ -9,9 +9,10 @@ numpy
 pandas
 pronouncing
 pyaudio
+pydub
 pypeaks
 pyphen
-pydub
+python-vlc
 requests
 tensorflow
 tqdm
