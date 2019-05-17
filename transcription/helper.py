@@ -58,6 +58,14 @@ def audio_to_stream(audio, chunk=CHUNK):
             break
 
 
+# Prints out every phoneme in a (sequence of) words
+# @in:  string
+# @out: NOTHIN'
+def print_phonemes(word):
+    for phoneme in split_spellings(word):
+        print(phoneme)
+
+
 # Function to split a sentence into its phonetic spelling
 # @in:  string
 # @out: stream(string)
