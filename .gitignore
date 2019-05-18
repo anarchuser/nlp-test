@@ -5,3 +5,5 @@ venv/*
 hypnote.json
 .gitignore
 .gitignore.bak
+
+*/.ipynb_checkpoints/*
