@@ -1,9 +1,31 @@
-Data/*
-venv/*
-.idea/*
+# Exclude files per default:
+*
 
-hypnote.json
-.gitignore
-.gitignore.bak
+# Include Python and C/C++ files again:
+!*.py
+!*.c
+!*.cpp
+!*.h
+!*.hpp
 
-*/.ipynb_checkpoints/*
+# Include requirements.txt:
+!requirements.txt
+
+# Include proto regen file:
+!regen_proto.sh
+
+# Include proto files:
+!proto/
+!*.proto
+!generated/
+
+# Include transcription package
+!transcription/
+
+# Include .gitignore and README
+!.gitignore
+!README.md
+
+# Include Jupyter Notebook except auto-generated checkpoints
+!Jupyter-Notebook/
+**/.ipynb_checkpoints/*
