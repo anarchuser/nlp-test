@@ -56,7 +56,7 @@ def bar_graph(column):
         else:
             categories.update({value: 1})
     bar = pd.DataFrame({'value': list(categories.keys()), 'val': list(categories.values())})
-    bar.plot.bar(x='value', y='val', rot=0)
+    bar.plot.barh(x='value', y='val', rot=0)
 
 
 def specgram(obj, xlabel=None, ylabel=None, axis=None, chunk=CHUNK):
