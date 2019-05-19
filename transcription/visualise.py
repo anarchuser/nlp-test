@@ -40,18 +40,23 @@ class Visualise:
     def phonemes(self):
         return split_spellings(str(self.metadata["sentence"].str.get_dummies()))
 
-    def mfcc(self):
-        pass
-
-    def mfcc_d(self):
-        pass
-
     def as_mfcc_stream(self, chunk=CHUNK):
         for window in audio_to_stream(self.data, chunk):
             yield librosa.feature.mfcc(window)
 
     def as_audio_stream(self, chunk=CHUNK):
         return audio_to_stream(self.data, chunk)
+
+
+def bar_graph(column):
+    categories = {}
+    for value in column:
+        if value in categories:
+            categories[value] += 1
+        else:
+            categories.update({value: 1})
+    bar = pd.DataFrame({'value': list(categories.keys()), 'val': list(categories.values())})
+    bar.plot.barh(x='value', y='val', rot=0)
 
 
 def specgram(obj, xlabel=None, ylabel=None, axis=None, chunk=CHUNK):
@@ -66,3 +71,4 @@ def specgram(obj, xlabel=None, ylabel=None, axis=None, chunk=CHUNK):
         s.axis(axis)
 
     s.show()
+
