@@ -29,3 +29,4 @@
 # Include Jupyter Notebook except auto-generated checkpoints
 */.ipynb_checkpoints/*
 !Jupyter-Notebook/
+!*.ipynb
