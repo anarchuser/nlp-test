@@ -44,13 +44,12 @@ class Segment:
 
     def __segment_text(self):
         # TODO:
-        #  Read sentence
-        #  Segment it
-        #  Add it to table
+        #  Add phonetic spellings to table
         for table in TABLES:
             # TODO: Write to TSV
             for sentence in self.tables[table].sentence:
                 for spelling in split_spellings(sentence):
+                    # Write spellings in tsv file
                     pass
 
     def __segment_speech(self, printout=False):
@@ -60,11 +59,13 @@ class Segment:
                 chunk = int(sr / 50)
                 chunk = 320
 
+                """ DEBUG PURPOSE ONLY """
                 mp.plot([value + 1000 for value in mfcc(stream_to_librosa(audio_to_stream(audio, chunk)))])
                 mp.plot([value for value in mfcc_d(stream_to_librosa(audio_to_stream(audio, chunk)))])
                 mp.ylabel("Something something")
                 mp.xlabel("Time in t/" + str(sr/chunk) + " seconds (Sample rate: " + str(sr) + ")")
                 mp.show()
+                """"""
             else:
                 for table in TABLES:
                     # TODO: Write to TSV
