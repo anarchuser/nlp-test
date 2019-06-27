@@ -18,7 +18,7 @@ CHUNK = int(RATE / 10)  # 100ms
 
 class Microphone:
     def __init__(self):
-        self.isRunning = False
+        self.isRunning = True
 
         print("Setting up audio stream")
         p = pyaudio.PyAudio()
@@ -32,8 +32,7 @@ class Microphone:
     # and prints the result
     def start(self):
         try:
-            self.isRunning = True
-            for data in self.processor.process(self.__generator__(stream=self.mic)):
+            for data in self.processor.process(self.generate()):
                 print(data)
         except KeyboardInterrupt:
             self.isRunning = False
@@ -41,6 +40,6 @@ class Microphone:
 
     # transforms a stream of audio data into a stream of gRPC Samples
     # (which are used by the processor, so Microphone and Server can be changed interchangeably)
-    def __generator__(self, stream):
+    def generate(self):
         while self.isRunning:
-            yield stream.read(CHUNK)
+            yield self.mic.read(CHUNK)
