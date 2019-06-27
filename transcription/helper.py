@@ -56,9 +56,14 @@ def audio_to_stream(audio, chunk=CHUNK):
 # TODO:
 # Function to split an audio stream into a phoneme stream
 # @in:  stream(librosa_array)
-# @out: stream(mfcc)
+# @out: stream(timestamp, mfcc)
 def split_phonemes(stream):
-    pass
+    time = 0
+    for sample in stream:
+        # Do something
+        phoneme = sample
+        yield phoneme
+        time += 1
 
 
 # Converts audio streams into mfcc streams (used for plotting)
