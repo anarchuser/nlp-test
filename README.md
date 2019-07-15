@@ -13,11 +13,18 @@ It uses the [Common Voice Database](https://voice.mozilla.org/), launched by Moz
 
 ## Technical Setup
 
-Please download the data set in your corresponding language [here](https://voice.mozilla.org/en/datasets) and extract the .tar.gz archive.  
+Please download the data set in your corresponding language [here](https://voice.mozilla.org/en/datasets) and extract the .tar.gz archive. This might take some time; check out your disk space.  
 
 Next, clone this repository, by downloading [here](https://github.com/anarchuser/nlp-test/) or with this command:  
 
 `git clone https://github.com/anarchuser/nlp-test/`
+
+Go into the git repo and install all Python 3.7 dependencies:
+
+```
+cd nlp-test/  
+pip install --user -r requirements.txt
+```
 
 Go to the `interactive` (this) branch to view the Jupyter Notebooks or the `transcription-speech2text` branch for the newest development.
 
