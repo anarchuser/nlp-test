@@ -6,14 +6,22 @@ It uses the [Common Voice Database](https://voice.mozilla.org/), launched by Moz
 ## Contents:
 
 1. [Technical Setup](#technical-setup)
-2. 
-3. 
+2. [Jupyter Notebook](#jupyter-notebook)
+3. [Data Set](#data-set)
 4. [Structure](#structure)
 5. [About](#about)
 
 ## Technical Setup
 
-## jupyter Notebook
+Please download the data set in your corresponding language [here](https://voice.mozilla.org/en/datasets) and extract the .tar.gz archive.  
+
+Next, clone this repository, by downloading [here](https://github.com/anarchuser/nlp-test/) or with this command:  
+
+`git clone https://github.com/anarchuser/nlp-test/`
+
+Go to the `interactive` (this) branch to view the Jupyter Notebooks or the `transcription-speech2text` branch for the newest development.
+
+## Jupyter Notebook
 
 ## Data Set
 
