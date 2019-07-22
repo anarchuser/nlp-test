@@ -9,12 +9,13 @@ from transcription import brain
 from transcription.helper import *
 
 import pandas as pd
-import librosa
+import librosa.feature
+import librosa.display
 import matplotlib.pyplot as mp
 
 import os
 
-CHUNK = 640  # Window Size
+CHUNK = 320  # Window Size
 
 FORMAT = ".tsv"
 TABLES = [
@@ -69,4 +70,12 @@ class Segment:
             for table in TABLES:
                 for file in self.tables[table].path:
                     audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
+                    graph = librosa.feature.mfcc(audio, sr, n_mfcc=int(len(audio) / CHUNK), dct_type=2)
+                    mp.figure(figsize=(10,4))
+                    librosa.display.specshow(graph, x_axis="time", y_axis="coefficients")
+                    mp.colorbar()
+                    mp.title(file)
+                    input()
+        except RuntimeError as e:
+            print(e)
 
