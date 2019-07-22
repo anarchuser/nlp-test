@@ -1,4 +1,5 @@
 # Package requirements for python:
+eyed3
 grpcio
 grpcio_tools
 inflect
