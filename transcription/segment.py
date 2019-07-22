@@ -38,13 +38,14 @@ class Segment:
         for table in TABLES:
             self.tables[table] = pd.read_csv(os.path.join(self.path, table + FORMAT), sep='\t')
 
-    def segment(self, printout=False):
+    def segment(self):
         self.__segment_text()
-        return self.__segment_speech(printout)
+        return self.__segment_speech()
 
     def __segment_text(self):
         # TODO:
         #  Add phonetic spellings to table
+        #   Finish db
         for table in TABLES:
             # TODO: Write to TSV
             for sentence in self.tables[table].sentence:
@@ -52,29 +53,20 @@ class Segment:
                     # Write spellings in tsv file
                     pass
 
-    def __segment_speech(self, printout=False):
+    def __segment_speech(self):
         try:
-            if printout:
-                audio, sr = librosa.load(os.path.join(self.path, "mp3", self.tables['validated'].path[0] + ".mp3"))
-                chunk = int(sr / 50)
-                chunk = 320
+            for table in TABLES:
+                # TODO: Write to TSV
+                for file in self.tables[table].path:
+                    audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
+                    for timestamp in split_phonemes(stream_to_librosa(audio_to_stream(audio))):
+                        print(timestamp)
+        except RuntimeError as e:
+            print(e)
 
-                """ DEBUG PURPOSE ONLY """
-                mp.plot([value + 1000 for value in mfcc(stream_to_librosa(audio_to_stream(audio, chunk)))])
-                mp.plot([value for value in mfcc_d(stream_to_librosa(audio_to_stream(audio, chunk)))])
-                mp.ylabel("Something something")
-                mp.xlabel("Time in t/" + str(sr/chunk) + " seconds (Sample rate: " + str(sr) + ")")
-                mp.show()
-                """"""
-            else:
-                for table in TABLES:
-                    # TODO: Write to TSV
-                    for file in self.tables[table].path:
-                        audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
-                        for timestamp in split_phonemes(stream_to_librosa(audio_to_stream(audio))):
-                            print(timestamp)
-        except RuntimeError:
-            pass
-
-        pass
+    def cepstrogram(self):
+        try:
+            for table in TABLES:
+                for file in self.tables[table].path:
+                    audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
 
