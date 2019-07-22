@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 NOTEPADAI
 (Database)
