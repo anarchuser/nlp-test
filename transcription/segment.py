@@ -43,10 +43,6 @@ class Segment:
         for table in TABLES:
             self.tables[table] = pd.read_csv(os.path.join(self.path, table + FORMAT), sep='\t')
 
-    def segment(self):
-        self.__segment_text()
-        return self.__segment_speech()
-
     def __segment_text(self):
         # TODO:
         #  Add phonetic spellings to table
