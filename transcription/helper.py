@@ -108,11 +108,23 @@ def string_cleaner(words):
 
 
 # TODO:
+# Function to split a sentence into its phonetic spelling
+# @in:  string
+# @out: stream(string)
+def split_spellings(sentence):
+    yield None
+
+
+# TODO:
 # Function to split an audio stream into a phoneme stream
 # @in:  stream(librosa_array)
-# @out: stream(mfcc)
+# @out: stream(tuple(timestamp, mfcc))
 def split_phonemes(stream):
-    pass
+    time = 0
+    for mfccs in mfcc(stream):
+        phoneme = mfccs
+        yield (time, phoneme)
+        time += 1
 
 
 # Converts audio streams into mfcc streams (used for plotting)
