@@ -2,13 +2,10 @@
 
 from transcription import segment
 
-scissors = segment.Segment("Data/en")
+scissors = segment.Segment("Data/de")
 
 try:
-    # scissors.segment()
-
-    print("Start printing cepstrograms")
-    scissors.cepstrogram()
+    scissors.segment(True)
 except KeyboardInterrupt:
     print("Interrupted by user")
     print("Exiting...")
