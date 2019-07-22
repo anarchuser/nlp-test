@@ -61,6 +61,12 @@ class Segment:
                     audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
                     for timestamp in split_phonemes(stream_to_librosa(audio_to_stream(audio))):
                         print(timestamp)
-        except RuntimeError:
-            pass
+        except RuntimeError as e:
+            print(e)
+
+    def cepstrogram(self):
+        try:
+            for table in TABLES:
+                for file in self.tables[table].path:
+                    audio, sr = librosa.load(os.path.join(self.path, "mp3", file + ".mp3"))
 
