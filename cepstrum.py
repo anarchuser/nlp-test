@@ -5,8 +5,6 @@ from transcription import segment
 scissors = segment.Segment("Data/en")
 
 try:
-    # scissors.segment()
-
     print("Start printing cepstrograms")
     scissors.cepstrogram()
 except KeyboardInterrupt:

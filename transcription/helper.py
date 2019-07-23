@@ -13,7 +13,7 @@ import inflect
 CHUNK = 320
 
 PUNCTUATION = (",", ".", ";", "!", "?", "\"")
-DASHES = ("_", "-")
+DASHES = ("_", "-", "/")
 
 inflect_engine = inflect.engine()
 
@@ -73,8 +73,9 @@ def print_phonemes(word):
 # @in:  string
 # @out: stream(string)
 def split_spellings(sentence, full_pronunciation_output=False):
+    print(sentence)
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
-    print(word_array)
+    # print(word_array)
     for word in word_array:
         word = string_cleaner(word)
         if word == "":
@@ -88,13 +89,19 @@ def split_spellings(sentence, full_pronunciation_output=False):
             for element in numword:
                 output = pronouncing.phones_for_word(element)
                 if not full_pronunciation_output:
-                    yield output[0]
+                    try:
+                        yield output[0]
+                    except IndexError:
+                        print("{} not in arpabet".format(output))
                 else:
                     yield output
         else:
             output = pronouncing.phones_for_word(word)
             if not full_pronunciation_output:
-                yield output[0]
+                try:
+                    yield output[0]
+                except IndexError:
+                    print("{} not in arpabet".format(output))
             else:
                 yield output
 
