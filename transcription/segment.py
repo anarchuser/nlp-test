@@ -7,6 +7,7 @@ A tool to segment the audio samples (spoken and written words) into phonemes
 
 from transcription import brain
 from transcription.helper import *
+from transcription.database import *
 
 import pandas as pd
 import librosa.feature
@@ -20,36 +21,25 @@ import time
 import eyed3
 
 CHUNK = 320  # Window Size
-
-FORMAT = ".tsv"
-TABLES = [
-    "dev",
-    "invalidated",
-    "other",
-    "test",
-    "train",
-    "validated"
-]
+MAX_AMNT = 4000  # Amount of cepstrograms to be produced
 
 
 class Segment:
     def __init__(self, path='./'):
         self.path = path
-        self.tables = {}
-        self.__load_tables()
+        self.db = Database()
 
-    # Load all tsv files into a dict
-    def __load_tables(self):
-        for table in TABLES:
-            self.tables[table] = pd.read_csv(os.path.join(self.path, table + FORMAT), sep='\t')
+        try:
+            self.db.load(path)
+        except FileNotFoundError:
+            print("Couldn't open tables")
 
     def __segment_text(self):
         # TODO:
         #  Add phonetic spellings to table
-        #   Finish db
         for table in TABLES:
             # TODO: Write to TSV
-            for sentence in self.tables[table].sentence:
+            for sentence in self.db.tables[table].sentence:
                 for spelling in split_spellings(sentence):
                     # Write spellings in tsv file
                     pass
@@ -58,8 +48,7 @@ class Segment:
         try:
             for table in TABLES:
                 # TODO: Write to TSV
-                for file in self.tables[table].path:
-                    audio, sr = librosa.load(os.path.join(self.path, "clips", file + ".mp3"))
+                for audio, sr in self.db.audio_from(table):
                     for timestamp in split_phonemes(stream_to_librosa(audio_to_stream(audio))):
                         print(timestamp)
         except RuntimeError as e:
@@ -67,39 +56,43 @@ class Segment:
 
     def segment(self):
         self.__segment_text()
-        return self.__segment_speech()
+        self.__segment_speech()
 
     def cepstrogram(self):
         # TODO:
         #  Save in file
         try:
             table = "validated"
-            num = 0
-            for file in self.tables[table].path:
+            for (metadata, index), (audio, sr) in self.db.audio_from(table):
                 # Load audio & metadata
-                path = os.path.join(self.path, "clips", file + ".mp3")
-                audio, sr = librosa.load(path)
-                metadata = eyed3.load(path)
+                file = metadata.path[index]
+                path = self.db.path_of(file)
+                id3 = eyed3.load(path)
+
+                print("|-{}:\t {}".format(index, file))
 
                 # Write metadata
-                #metadata.tag.artist = entry.client_id
-                metadata.tag.album = self.path
-                metadata.tag.title = file
-                #metadata.lyrics.set(entry.sentence)
+                try:
+                    id3.tag.artist = metadata.client_id[index]
+                    id3.tag.album = self.path
+                    id3.tag.title = file
+                    # TODO:
+                    #  Fix this:
+                    # id3.tag.lyrics = metadata.sentence[index]
+                    id3.tag.save()
+                except AttributeError:
+                    print(" \\ No metadata set!")
 
-                # Create images
+                # Create & save plots
                 graph = librosa.feature.mfcc(audio, sr, n_mfcc=int(len(audio) / CHUNK), dct_type=2)
                 mp.figure(figsize=(10, 4))
                 librosa.display.specshow(graph, x_axis="time")
                 mp.colorbar()
-                mp.title(num)
-
-                # Save & close
-                mp.savefig(os.path.join(self.path, "images", file), orientation="landscape", quality=95, format="png")
+                mp.title(index)
+                mp.savefig(os.path.join(self.path, "images", "{}:{}".format(index, file)), orientation="landscape", quality=95, format="png")
                 mp.close()
-                print(str(num) + ":\t " + file)
-                num += 1
-                if num > 0:
+
+                if index >= MAX_AMNT - 1:
                     sys.exit()
 
         except RuntimeError as e:
