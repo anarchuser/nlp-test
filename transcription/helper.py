@@ -72,7 +72,7 @@ def print_phonemes(word):
 # Function to split a sentence into its phonetic spelling
 # @in:  string
 # @out: stream(string)
-def split_spellings(sentence, full_pronounciation_output=False):
+def split_spellings(sentence, full_pronunciation_output=False):
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
     print(word_array)
     for word in word_array:
@@ -87,13 +87,13 @@ def split_spellings(sentence, full_pronounciation_output=False):
                 numword = numword.split(" ")
             for element in numword:
                 output = pronouncing.phones_for_word(element)
-                if not full_pronounciation_output:
+                if not full_pronunciation_output:
                     yield output[0]
                 else:
                     yield output
         else:
             output = pronouncing.phones_for_word(word)
-            if not full_pronounciation_output:
+            if not full_pronunciation_output:
                 yield output[0]
             else:
                 yield output
