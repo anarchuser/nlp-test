@@ -31,8 +31,9 @@ class Segment:
 
         try:
             self.db.load(path)
-        except FileNotFoundError:
+        except IOError:
             print("Couldn't open tables")
+            sys.exit(1)
 
     def __segment_text(self):
         # TODO:
@@ -41,8 +42,7 @@ class Segment:
             # TODO: Write to TSV
             for sentence in self.db.tables[table].sentence:
                 for spelling in split_spellings(sentence):
-                    # Write spellings in tsv file
-                    pass
+                    print(spelling)
 
     def __segment_speech(self):
         try:
@@ -56,7 +56,7 @@ class Segment:
 
     def segment(self):
         self.__segment_text()
-        self.__segment_speech()
+        # self.__segment_speech()
 
     def cepstrogram(self):
         # TODO:
