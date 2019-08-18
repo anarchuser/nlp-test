@@ -85,7 +85,7 @@ class Database:
         return self.tables[table][self.tables[table][s_col] == s_val]
 
     def get(self, row, column, table):
-        return self.get_row(row, table)[column][0]
+        return self.get_row(row, table)[column][row]
 
     def get_row(self, row, table):
         try:

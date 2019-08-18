@@ -42,9 +42,10 @@ class Segment:
             print("#### {} ####".format(table))
             # TODO: Write to TSV
             for index in self.db.tables[table].index:
-                print(index)
-                for spelling in split_spellings(self.db.get(index, "sentence", table)[0]):
-                    # print(spelling)
+                sentence = self.db.get(index, "sentence", table)
+                print("{} {}".format(index, sentence))
+                for spelling in split_spellings(sentence):
+                    # print(spelling, sep=" ")
                     pass
 
     def __segment_speech(self):

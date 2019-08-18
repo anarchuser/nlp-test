@@ -73,9 +73,7 @@ def print_phonemes(word):
 # @in:  string
 # @out: stream(string)
 def split_spellings(sentence, full_pronunciation_output=False):
-    print(sentence)
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
-    # print(word_array)
     for word in word_array:
         word = __string_cleaner(word)
         if word == "":
@@ -106,7 +104,7 @@ def __pronounce(word, full_pronunciation_output):
         else:
             return output[0]
     else:
-        raise IndexError
+        raise ValueError
 
 
 def __string_cleaner(words):
