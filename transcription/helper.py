@@ -77,12 +77,12 @@ def split_spellings(sentence, full_pronunciation_output=False):
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
     # print(word_array)
     for word in word_array:
-        word = string_cleaner(word)
+        word = __string_cleaner(word)
         if word == "":
             continue
         if word.isdigit():
             numword = inflect_engine.number_to_words(word)
-            numword = string_cleaner(numword)
+            numword = __string_cleaner(numword)
             print(numword)
             if " " in numword:
                 numword = numword.split(" ")
@@ -106,7 +106,7 @@ def split_spellings(sentence, full_pronunciation_output=False):
                 yield output
 
 
-def string_cleaner(words):
+def __string_cleaner(words):
     for i in range(len(PUNCTUATION)):
         words = words.replace(PUNCTUATION[i], "")
     for i in range(len(DASHES)):

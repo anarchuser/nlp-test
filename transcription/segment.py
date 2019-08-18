@@ -39,11 +39,11 @@ class Segment:
         # TODO:
         #  Add phonetic spellings to table
         for table in TABLES:
-            print("########\n{}\n########".format(table))
+            print("#### {} ####".format(table))
             # TODO: Write to TSV
-            for sentence in self.db.tables[table].index:
-                print(sentence)
-                for spelling in split_spellings(self.db.get(sentence, "sentence", table)):
+            for index in self.db.tables[table].index:
+                print(index)
+                for spelling in split_spellings(self.db.get(index, "sentence", table)[0]):
                     # print(spelling)
                     pass
 
