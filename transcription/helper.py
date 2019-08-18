@@ -81,29 +81,32 @@ def split_spellings(sentence, full_pronunciation_output=False):
         if word == "":
             continue
         if word.isdigit():
-            numword = inflect_engine.number_to_words(word)
-            numword = __string_cleaner(numword)
-            print(numword)
-            if " " in numword:
-                numword = numword.split(" ")
-            for element in numword:
-                output = pronouncing.phones_for_word(element)
-                if not full_pronunciation_output:
-                    try:
-                        yield output[0]
-                    except IndexError:
-                        print("{} not in arpabet".format(output))
-                else:
-                    yield output
-        else:
-            output = pronouncing.phones_for_word(word)
-            if not full_pronunciation_output:
+            num_word = inflect_engine.number_to_words(word)
+            num_word = __string_cleaner(num_word)
+            print(num_word)
+            if " " in num_word:
+                num_word = num_word.split(" ")
+            for element in num_word:
                 try:
-                    yield output[0]
-                except IndexError:
-                    print("{} not in arpabet".format(output))
-            else:
-                yield output
+                    yield __pronounce(element, full_pronunciation_output)
+                except ValueError:
+                    print("{}:\nPronunciation failed for '{}'".format(sentence, element))
+        else:
+            try:
+                yield __pronounce(word, full_pronunciation_output)
+            except ValueError:
+                print("{}:\nPronunciation failed for '{}'".format(sentence, word))
+
+
+def __pronounce(word, full_pronunciation_output):
+    output = pronouncing.phones_for_word(word)
+    if output:
+        if full_pronunciation_output:
+            return output
+        else:
+            return output[0]
+    else:
+        raise IndexError
 
 
 def __string_cleaner(words):
