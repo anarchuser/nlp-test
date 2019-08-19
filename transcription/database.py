@@ -34,6 +34,9 @@ class Database:
             except IOError:
                 print("Couldn't load database from given files!")
 
+    def __del__(self):
+        self.save()
+
     def load(self, path):
         self.path = path
         self.__load_tables()
@@ -55,7 +58,7 @@ class Database:
     # Load all tsv files into a dict
     def __load_tables(self):
         for table in TABLES:
-            fname = os.path.join(self.path, table + FORMAT)
+            fname = os.path.join(self.path, "{}_MOD{}".format(table, FORMAT))
             try:
                 print("Reading {}...".format(fname), end='\0')
                 self.tables[table] = pd.read_csv(fname, sep='\t')
@@ -94,3 +97,8 @@ class Database:
             print(e)
             sys.exit(1)
 
+    def set(self, row, column, table, val):
+        self.tables[table][column][row] = val
+
+    def set_col(self, col, table, val):
+        self.tables[table][col] = val

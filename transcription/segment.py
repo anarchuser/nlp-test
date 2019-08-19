@@ -20,6 +20,8 @@ import time
 
 import eyed3
 
+DEBUG = False
+
 CHUNK = 320  # Window Size
 MAX_AMNT = 4000  # Amount of cepstrograms to be produced
 
@@ -39,14 +41,15 @@ class Segment:
         # TODO:
         #  Add phonetic spellings to table
         for table in TABLES:
-            print("#### {} ####".format(table))
-            # TODO: Write to TSV
+            print("#### {}".format(table))
+            #self.db.tables[table].spellings = "."
             for index in self.db.tables[table].index:
                 sentence = self.db.get(index, "sentence", table)
-                print("{} {}".format(index, sentence))
-                for spelling in split_spellings(sentence):
-                    # print(spelling, sep=" ")
-                    pass
+                phonemes = [spelling for spelling in split_spellings(sentence)]
+                self.db.tables[table]["spellings"][index] = [phonemes]
+
+                if DEBUG:
+                    print("{} {}".format(index, sentence))
 
     def __segment_speech(self):
         try:

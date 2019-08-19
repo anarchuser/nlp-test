@@ -10,10 +10,12 @@ import numpy as np
 import pronouncing
 import inflect
 
+DEBUG = False
+
 CHUNK = 320
 
-PUNCTUATION = (",", ".", ";", "!", "?", "\"")
-DASHES = ("_", "-", "/")
+PUNCTUATION = (",", ".", ";", "!", "?", "\"", ":")
+DASHES = ("_", "-", "—", "/")
 
 inflect_engine = inflect.engine()
 
@@ -73,27 +75,34 @@ def print_phonemes(word):
 # @in:  string
 # @out: stream(string)
 def split_spellings(sentence, full_pronunciation_output=False):
+    sentence = __string_cleaner(sentence)
     word_array = tokenize.WhitespaceTokenizer().tokenize(sentence)
     for word in word_array:
-        word = __string_cleaner(word)
-        if word == "":
+        is_dollar = False
+        if not word:
             continue
+        if word[0] is "$":
+            is_dollar = True
+            word = word[1:]
         if word.isdigit():
             num_word = inflect_engine.number_to_words(word)
             num_word = __string_cleaner(num_word)
-            print(num_word)
             if " " in num_word:
                 num_word = num_word.split(" ")
             for element in num_word:
                 try:
                     yield __pronounce(element, full_pronunciation_output)
                 except ValueError:
-                    print("{}:\nPronunciation failed for '{}'".format(sentence, element))
+                    if DEBUG:
+                        print("| {}:\n\\ Pronunciation failed for '{}'".format(sentence, element))
+        if is_dollar:
+            yield __pronounce("dollar", full_pronunciation_output)
         else:
             try:
                 yield __pronounce(word, full_pronunciation_output)
             except ValueError:
-                print("{}:\nPronunciation failed for '{}'".format(sentence, word))
+                if DEBUG:
+                    print("| {}:\n\\ Pronunciation failed for '{}'".format(sentence, word))
 
 
 def __pronounce(word, full_pronunciation_output):
@@ -107,12 +116,12 @@ def __pronounce(word, full_pronunciation_output):
         raise ValueError
 
 
-def __string_cleaner(words):
+def __string_cleaner(sentence):
     for i in range(len(PUNCTUATION)):
-        words = words.replace(PUNCTUATION[i], "")
+        sentence = sentence.replace(PUNCTUATION[i], "")
     for i in range(len(DASHES)):
-        words = words.replace(DASHES[i], " ")
-    return words
+        sentence = sentence.replace(DASHES[i], " ")
+    return sentence
 
 
 # TODO:
